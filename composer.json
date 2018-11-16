@@ -16,7 +16,8 @@
         }
     ],
     "require": {
-        "php": "^7.2.0"
+        "php": "^7.2.0",
+        "basement/basement": "dev-master"
     },
     "support": {
         "email": "linlanye@sina.cn",

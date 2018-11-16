@@ -1,0 +1,37 @@
+{
+    "name": "lin/lin-components",
+    "description": "lin框架组件",
+    "keywords": [
+        "lin",
+        "php7",
+        "components",
+        "linlanye"
+    ],
+    "homepage": "https://github.com/linlanye/lin-components",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "林澜叶 (linlanye)",
+            "email": "linlanye@sina.cn"
+        }
+    ],
+    "require": {
+        "php": "^7.2.0"
+    },
+    "support": {
+        "email": "linlanye@sina.cn",
+        "issues": "https://github.com/linlanye/lin-components/issues",
+        "docs": "https://github.com/linlanye/lin-components-docs"
+    },
+    "autoload": {
+        "psr-4": {
+            "lin\\": "src/",
+            "lin\\tests\\": "tests/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    }
+}

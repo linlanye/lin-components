@@ -1,12 +1,22 @@
 <?php
 
+//测试启动
 error_reporting(E_ALL);
 
-//引入composer
-define('__VENDOR__', realpath(dirname(__FILE__)));
-require __VENDOR__ . '/autoload.php';
+//引入composer自动加载和链接器
+$autoload  = dirname(__DIR__) . '/vendor/autoload.php';
+$autoload2 = dirname(__DIR__) . '/../../autoload.php';
+if (file_exists($autoload)) {
+    require dirname($autoload) . '/linker.php';
+    require $autoload;
+} else if (file_exists($autoload2)) {
+    require dirname($autoload2) . '/linker.php';
+    require $autoload2;
+} else {
+    throw new Exception("can not find autoload.php file", 1);
+}
 
-define('__ROOT__', __VENDOR__ . '/lin/components');
+define('__ROOT__', dirname(__DIR__));
 define('__TMP__', __ROOT__ . '/tests/tmp');
 define('__DB__', __ROOT__ . '/tests/datasets');
 define('__TEST__', __ROOT__ . '/tests');

@@ -1,15 +1,15 @@
 <?php
-$root = realpath(dirname($_SERVER['SCRIPT_FILENAME']) . '/../'); //整个应用根目录
+$root = __DIR__; //整个应用根目录
 $lin  = [
-    'data'       => $root . '/data', //数据目录
-    'cache'      => $root . '/cache', //缓存目录
+    'data'       => $root . '/runtime/data', //数据目录
+    'cache'      => $root . '/runtime/cache', //缓存目录
     'config'     => $root . '/config', //配置目录
-    'lang'       => $root . '/app/affix/lang', //语言包目录
-    'route'      => $root . '/app/affix/route', //路由目录
-    'event'      => $root . '/app/affix/event', //事件目录
-    'view'       => $root . '/app/affix/response/view', //视图目录
-    'jsonxml'    => $root . '/app/affix/response/jsonxml', //json, xml模板目录
-    'components' => $root . '/vendor/lin/components/src', //组件目录
+    'lang'       => $root . '/lang', //语言包目录
+    'route'      => $root . '/runtime/route', //路由目录
+    'event'      => $root . '/runtime/event', //事件目录
+    'view'       => $root . '/runtime/response/view', //视图目录
+    'jsonxml'    => $root . '/runtime/response/jsonxml', //json, xml模板目录
+    'components' => $root . '/src', //组件目录
 ];
 
 return [

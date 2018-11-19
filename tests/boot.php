@@ -7,10 +7,10 @@ error_reporting(E_ALL);
 $autoload  = dirname(__DIR__) . '/vendor/autoload.php';
 $autoload2 = dirname(__DIR__) . '/../../autoload.php';
 if (file_exists($autoload)) {
-    require dirname($autoload) . '/linker.php';
+    require dirname($autoload) . '/basement/basement/boot.php';
     require $autoload;
 } else if (file_exists($autoload2)) {
-    require dirname($autoload2) . '/linker.php';
+    require dirname($autoload2) . '/basement/basement/boot.php';
     require $autoload2;
 } else {
     throw new Exception("can not find autoload.php file", 1);

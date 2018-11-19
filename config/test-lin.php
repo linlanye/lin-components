@@ -1,15 +1,15 @@
 <?php
 //测试专用配置，与测试紧密耦合，不可更改
 $lin = [
-    'data'      => __TMP__,
-    'cache'     => __TMP__,
-    'config'    => __TMP__,
-    'lang'      => __ROOT__ . '/lang',
-    'route'     => __TEST__ . '/scripts/route',
-    'event'     => __TEST__ . '/scripts/event',
-    'view'      => __TEST__ . '/scripts/view',
-    'jsonxml'   => __TMP__,
-    'framework' => __ROOT__ . '/src',
+    'data'       => __TMP__,
+    'cache'      => __TMP__,
+    'config'     => __TMP__,
+    'lang'       => __ROOT__ . '/lang',
+    'route'      => __TEST__ . '/scripts/route',
+    'event'      => __TEST__ . '/scripts/event',
+    'view'       => __TEST__ . '/scripts/view',
+    'jsonxml'    => __TMP__,
+    'components' => __ROOT__ . '/src',
 ];
 
 return [
@@ -234,8 +234,8 @@ return [
     /*响应组件*/
     'response'  => [
         'view'    => [
-            'error'        => $lin['framework'] . '/response/structure/error.html', //错误页面
-            'success'      => $lin['framework'] . '/response/structure/success.html', //成功页面
+            'error'        => $lin['components'] . '/response/structure/error.html', //错误页面
+            'success'      => $lin['components'] . '/response/structure/success.html', //成功页面
             'countdown_id' => 'lin-jump-countdown', //跳转倒计时所在的html节点id
             'method'       => function ($template, $data) {
                 $View = new lin\view\View; //嵌入的视图响应方法，入参为视图模板名、视图数据
@@ -327,7 +327,7 @@ return [
             'seed'       => '23456789ABCDEFGHJKLMNPQRSTUWXYZ', //生成验证码的种子
             'background' => [], //背景图片(完整路径名)，若有则随机选择
             'ttf'        => [ //随机使用的ttf字体库，
-                $lin['framework'] . '/security/structure/captcha/stencil-four.ttf',
+                $lin['components'] . '/security/structure/captcha/stencil-four.ttf',
             ],
         ],
         'debug'   => true,

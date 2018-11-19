@@ -2,14 +2,14 @@
 
 error_reporting(E_ALL);
 
-//引入composer和basement
-define('__VENDOR__', realpath(dirname(dirname(dirname(__FILE__)))));
-define('__ROOT__', __VENDOR__ . '/lin');
+//引入composer
+define('__VENDOR__', realpath(dirname(__FILE__)));
+require __VENDOR__ . '/autoload.php';
+
+define('__ROOT__', __VENDOR__ . '/lin/components');
 define('__TMP__', __ROOT__ . '/tests/tmp');
 define('__DB__', __ROOT__ . '/tests/datasets');
 define('__TEST__', __ROOT__ . '/tests');
-require __VENDOR__ . '/autoload.php';
-require __VENDOR__ . '/linker.php';
 
 //注册组件
 Linker::register([
@@ -33,8 +33,8 @@ Linker::register([
 
 //读取配置
 
-Linker::Config()::set('lin', include __VENDOR__ . '/lin/config/test-lin.php');
-Linker::Config()::set('servers', include __VENDOR__ . '/lin/config/test-servers.php');
+Linker::Config()::set('lin', include __ROOT__ . '/config/test-lin.php');
+Linker::Config()::set('servers', include __ROOT__ . '/config/test-servers.php');
 
 if (!file_exists(__TMP__)) {
     mkdir(__TMP__, 0750, true);

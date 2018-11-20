@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-11-01 16:05:42
- * @Modified time:      2018-11-13 10:39:55
+ * @Modified time:      2018-11-20 16:44:46
  * @Depends on Linker:  None
  * @Description:        测试LSE算法
  */
@@ -22,6 +22,10 @@ class LSETest extends TestCase
         $data = (string) mt_rand();
         $en1  = $LSE1->encrypt($data);
         $de1  = $LSE1->decrypt($en1); //一次加密解密
+        $this->assertSame($data, $de1);
+
+        $en1 = $LSE1->encrypt($data, true); //用原始二进制数据加解密
+        $de1 = $LSE1->decrypt($en1, true);
         $this->assertSame($data, $de1);
 
         $en2 = $LSE1->encrypt($data); //每一次加密输出不一样

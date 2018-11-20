@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-05-21 20:06:39
- * @Modified time:      2018-11-08 10:09:54
+ * @Modified time:      2018-11-20 11:10:05
  * @Depends on Linker:  None
  * @Description:        测试配置类，该类属于全局变量，测试方法顺序不能变
  */
@@ -49,6 +49,25 @@ class ConfigTest extends TestCase
         //测试不存在的数据
         $this->assertNull(Config::get('none'));
         $this->assertFalse(Config::exists('none'));
+
+        //测试replace
+        Config::set($name, $data);
+        $m1 = ['a1' => mt_rand()];
+        $m2 = ['a0' => ['b0' => mt_rand()]];
+
+        //递归替换
+        $this->assertTrue(Config::replace($name, $m1));
+        $this->assertSame(Config::get($name), array_replace($data, $m1));
+
+        //非递归替换
+        Config::set($name, $data);
+        $this->assertTrue(Config::replace($name, $m2, true));
+        $this->assertSame(Config::get($name), $m2);
+
+        //不存在时等效于get
+        Config::clean($name);
+        $this->assertTrue(Config::replace($name, $data));
+        $this->assertSame(Config::get($name), $data);
 
         //清理
         Config::clean($name);

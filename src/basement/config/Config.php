@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-06-20 11:53:48
- * @Modified time:      2018-11-08 10:08:41
+ * @Modified time:      2018-11-20 11:06:29
  * @Depends on Linker:  Debug
  * @Description:        配置类，可链式读取和设置
  */
@@ -35,6 +35,20 @@ class Config
         }
         return true;
     }
+    public static function replace(string $configName, array $content, bool $isRecursive = false): bool
+    {
+        if (!isset(self::$data[$configName])) {
+            self::$data[$configName] = $content;
+            return true;
+        }
+        if ($isRecursive) {
+            self::$data[$configName] = array_replace_recursive(self::$data[$configName], $content);
+        } else {
+            self::$data[$configName] = array_replace(self::$data[$configName], $content);
+        }
+        return true;
+    }
+
     //配置文件是否已读取
     public static function exists(string $configName): bool
     {

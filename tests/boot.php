@@ -1,25 +1,25 @@
 <?php
 
-//测试启动
+/**
+ * 测试启动
+ */
+
 error_reporting(E_ALL);
-
-//引入composer自动加载和链接器
-$autoload  = dirname(__DIR__) . '/vendor/autoload.php';
-$autoload2 = dirname(__DIR__) . '/../../autoload.php';
-if (file_exists($autoload)) {
-    require dirname($autoload) . '/basement/basement/boot.php';
-    require $autoload;
-} else if (file_exists($autoload2)) {
-    require dirname($autoload2) . '/basement/basement/boot.php';
-    require $autoload2;
-} else {
-    throw new Exception("can not find autoload.php file", 1);
-}
-
 define('__ROOT__', dirname(__DIR__));
 define('__TMP__', __ROOT__ . '/tests/tmp');
 define('__DB__', __ROOT__ . '/tests/datasets');
 define('__TEST__', __ROOT__ . '/tests');
+$vendor  = __ROOT__ . '/vendor';
+$vendor2 = realpath(__ROOT__ . '/../../');
+
+//引入basement启动
+if (file_exists($vendor)) {
+} else if (file_exists($vendor2)) {
+    $vendor = $vendor2;
+} else {
+    throw new Exception("can not find autoload.php file", 1);
+}
+require $vendor . '/basement/basement/boot.php';
 
 //注册组件
 Linker::register([
@@ -41,8 +41,10 @@ Linker::register([
 
 ]);
 
-//读取配置
+//引入composer自动加载
+require $vendor . '/autoload.php';
 
+//读取配置
 Linker::Config()::set('lin', include __ROOT__ . '/config/test-lin.php');
 Linker::Config()::set('servers', include __ROOT__ . '/config/test-servers.php');
 

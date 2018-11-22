@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/linlanye/basement.git",
-                "reference": "084a867814559bb65ef23872755fafdc8eb161c8"
+                "reference": "245736de9c730b392fba77f94350043200fa38af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/linlanye/basement/zipball/084a867814559bb65ef23872755fafdc8eb161c8",
-                "reference": "084a867814559bb65ef23872755fafdc8eb161c8",
+                "url": "https://github-api-proxy.cnpkg.org/repos/linlanye/basement/zipball/245736de9c730b392fba77f94350043200fa38af",
+                "reference": "245736de9c730b392fba77f94350043200fa38af",
                 "shasum": ""
             },
             "require": {
@@ -26,13 +26,10 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "basement\\": "src/"
-                },
-                "files": [
-                    "Linker.php"
-                ]
+                    "basement\\": "src"
+                }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -50,7 +47,7 @@
                 "general",
                 "linlanye"
             ],
-            "time": "2018-11-16T07:05:28+00:00"
+            "time": "2018-11-22T09:28:12+00:00"
         }
     ],
     "packages-dev": [],

@@ -13,22 +13,18 @@
 <!-- 	<logging>
 		<log type="coverage-clover" target="d:/result.xml"/>
 	</logging> -->
-	<groups>
+<!-- 	<groups>
 		<exclude>
 			<group>sleep</group>
 			<group>server</group>
 			<group>database</group>
 		</exclude>
-	</groups>
-<!--	<filter>
+	</groups> -->
+	<filter>
 		<whitelist processUncoveredFilesFromWhitelist="true">
-			<directory>tests</directory>
-			<exclude>
-				<directory>tests/tmp</directory>
-				<file>test/boot.php</file>
-			</exclude>
+			<directory suffix="Test.php">tests/basement</directory>
+			<directory suffix="Test.php">tests/basement_server</directory>
+			<directory suffix="Test.php">tests/components</directory>
 		</whitelist>
 	</filter>
-
--->
 </phpunit>

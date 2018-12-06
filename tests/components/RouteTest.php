@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-08-21 15:22:13
- * @Modified time:      2018-09-04 10:31:17
+ * @Modified time:      2018-12-06 13:52:12
  * @Depends on Linker:  Config
  * @Description:        测试路由器
  */
@@ -17,15 +17,16 @@ use PHPUnit\Framework\TestCase;
 
 class RouteTest extends TestCase
 {
-
-    private $url; //原始的url值，用于修改url
     public function setUp()
     {
-        $this->url = $_SERVER['REQUEST_URI'] ?? null;
+        //模拟数据
+        $_SERVER['REQUEST_URI']    = '/';
+        $_SERVER['REQUEST_METHOD'] = 'post';
     }
     public function tearDown()
     {
-        $_SERVER['REQUEST_URI'] = $this->url;
+        unset($_SERVER['REQUEST_URI']);
+        unset($_SERVER['REQUEST_METHOD']);
         Route::reset();
         Request::reset(); //重置请求避免缓存
     }

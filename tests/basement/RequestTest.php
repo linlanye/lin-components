@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-05-31 14:04:33
- * @Modified time:      2018-10-27 21:26:36
+ * @Modified time:      2018-12-06 14:02:41
  * @Depends on Linker:  Config
  * @Description:        使用控制台测试，默认请求方法为post
  */
@@ -19,31 +19,37 @@ class RequestTest extends TestCase
 
     protected function setUp()
     {
-        $_SERVER['REQUEST_URI'] = '/';
-        // Request::getURL();
-        // var_dump($_SERVER['PHP_SELF']);
-        // var_dump($_SERVER['SCRIPT_FILENAME']);
         $this->config = Linker::Config()::lin('request');
     }
     protected function tearDown()
     {
+        unset($_SERVER['REQUEST_URI']);
+        unset($_SERVER['REQUEST_METHOD']);
+        unset($_SERVER['HTTP_HOST']);
+        unset($_SERVER['SERVER_PORT']);
+
         Request::reset();
     }
 
     public function testGetSet()
     {
-        //设置某个方法携带的参数
+        $_SERVER['REQUEST_URI']    = '/';
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+
+        //断言设置指定方法
         $data = [
             md5(mt_rand()) => md5(mt_rand()),
         ];
         $method = md5(mt_rand());
+        $this->assertNull(Request::get($method)); //不存在
         Request::set($method, $data);
         $this->assertSame(Request::get($method), $data);
 
-        //断言当前方法。默认应为post方法
+        //断言当前方法
         $data = [
             md5(mt_rand()) => md5(mt_rand()),
         ];
+        $this->assertEmpty(Request::getCurrent()); //Reqeust已初始化
         Request::setCurrent($data);
         $this->assertSame(Request::getCurrent(), $data);
         $this->assertSame(Request::getCurrent(), $_POST);
@@ -51,6 +57,8 @@ class RequestTest extends TestCase
     }
     public function testUserMethod()
     {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+
         //使用post做模拟
         $_POST              = [md5(mt_rand()) => md5(mt_rand())];
         $userMethod         = md5(mt_rand());
@@ -69,19 +77,20 @@ class RequestTest extends TestCase
 
     public function testMethod()
     {
+        $this->assertNull(Request::getMethod());
+        Request::reset();
+
         //模拟方法
-        $rawMethod                 = $_SERVER['REQUEST_METHOD'] ?? null;
         $method                    = md5(mt_rand());
         $_SERVER['REQUEST_METHOD'] = $method;
 
         $this->assertSame(Request::getMethod(), Request::getRawMethod());
         $this->assertSame(Request::getMethod(), strtoupper($method));
-
-        //复原
-        $_SERVER['REQUEST_METHOD'] = $rawMethod;
     }
     public function testDynamicGetSet()
     {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+
         $key     = md5(mt_rand());
         $value   = md5(mt_rand());
         $_POST   = [$key => $value];
@@ -114,15 +123,28 @@ class RequestTest extends TestCase
 
     public function testGetURL()
     {
-        //模拟
-        $rawMethod = $_SERVER['REQUEST_URI'] ?? null;
-        $url       = md5(mt_rand()) . '/' . md5(mt_rand());
+        //CLI下无法获取
+        $this->assertNull(Request::getURL());
 
+        //模拟
+        $url                    = md5(mt_rand()) . '/' . md5(mt_rand());
         $_SERVER['REQUEST_URI'] = $url;
         $this->assertSame(Request::getURL(), '/' . $url);
+    }
 
-        //复原
-        $_SERVER['REQUEST_URI'] = $rawMethod;
+    public function testGetHostPort()
+    {
+        //CLI下无法获取
+        $this->assertNull(Request::getHost());
+        $this->assertNull(Request::getPort());
+
+        //模拟
+        $host                   = md5(mt_rand());
+        $port                   = mt_rand();
+        $_SERVER['HTTP_HOST']   = $host;
+        $_SERVER['SERVER_PORT'] = $port;
+        $this->assertSame(Request::getHost(), $host);
+        $this->assertSame(Request::getPort(), $port);
     }
 
     public function testUploads()

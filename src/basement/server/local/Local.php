@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-04-19 17:11:52
- * @Modified time:      2018-11-02 14:13:21
+ * @Modified time:      2018-12-06 15:03:45
  * @Depends on Linker:  Config Exception
  * @Description:        访问本地文件读写
  */
@@ -51,17 +51,17 @@ class Local
         return filectime($fileName);
     }
     //文件大小
-    public function getSize(string $fileName) : int
+    public function getSize(string $fileName) :  ? int
     {
         $fileName = $this->__path . $fileName;
         if (!file_exists($fileName)) {
-            return 0;
+            return null;
         }
         return filesize($fileName);
     }
 
     //文件是否存在
-    public function exists(string $fileName): bool
+    public function exists(string $fileName) : bool
     {
         return file_exists($this->__path . $fileName);
     }

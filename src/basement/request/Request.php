@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-06-20 11:53:48
- * @Modified time:      2018-12-06 11:23:49
+ * @Modified time:      2018-12-06 13:58:26
  * @Depends on Linker:  Config Exception
  * @Description:        HTTP请求类，提供请求相关的一系列操作
  */
@@ -26,7 +26,10 @@ class Request
     public static function getCurrent() :  ? array
     {
         self::init();
-        return self::$data[self::$method] ?? null;
+        if (!self::$method || !isset(self::$data[self::$method])) {
+            return null;
+        }
+        return self::$data[self::$method];
     }
 
     public static function set(string $method, array $data) : bool
@@ -51,29 +54,29 @@ class Request
         return $array[strtoupper($key)] ?? null;
     }
 
-    public static function getMethod() : string
+    public static function getMethod() :  ? string
     {
         self::init();
         return self::$method;
     }
 
-    public static function getHost(): string
+    public static function getHost() :  ? string
     {
         self::init();
-        return $_SERVER['HTTP_HOST'] ?? ''; //CLI下默认为空
+        return $_SERVER['HTTP_HOST'] ?? null;
     }
-    public static function getPort(): int
+    public static function getPort() :  ? int
     {
         self::init();
-        return $_SERVER['SERVER_PORT'] ?? 0; //CLI下默认为0
+        return $_SERVER['SERVER_PORT'] ?? null;
     }
 
     //获取请求的相对有效路径
-    public static function getURL(): string
+    public static function getURL() :  ? string
     {
         self::init();
         if (!isset($_SERVER['REQUEST_URI'])) {
-            return ''; //CLI下默认为''
+            return null;
         }
         if (!self::$url) {
             $script    = basename($_SERVER['SCRIPT_NAME']); //获得入口脚本名
@@ -86,16 +89,16 @@ class Request
         return self::$url;
     }
     //获得ip
-    public static function getIP(): string
+    public static function getIP() :  ? string
     {
         self::init();
-        return $_SERVER['HTTP_X_FORWARDED_FOR'] ?? ($_SERVER['REMOTE_ADDR'] ?? 'unknown');
+        return $_SERVER['HTTP_X_FORWARDED_FOR'] ?? ($_SERVER['REMOTE_ADDR'] ?? null);
     }
     //获取当前请求协议
-    public static function getProtocol(): string
+    public static function getProtocol() :  ? string
     {
         self::init();
-        return $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.1'; //控制台默认http
+        return $_SERVER['SERVER_PROTOCOL'] ?? null;
     }
     /******************/
 
@@ -190,7 +193,7 @@ class Request
     }
 
     //清楚某个方法下的数据
-    public static function clean(string $method = ''): bool
+    public static function clean(string $method = '') : bool
     {
         if ($method) {
             unset(self::$data[$method]);
@@ -223,7 +226,7 @@ class Request
     }
 
     //获得原始请求类型
-    public static function getRawMethod(): string
+    public static function getRawMethod():  ? string
     {
         self::init();
         return self::$rawMethod;
@@ -238,18 +241,18 @@ class Request
         $config = Linker::Config()::get('lin')['request'];
 
         //标记运行状态，设置常用的请求及参数
-        self::$rawMethod = $_SERVER['REQUEST_METHOD'] ?? ''; //CLI下默认为''
-        self::$rawMethod = strtoupper(self::$rawMethod);
-        self::$method    = self::$rawMethod;
+        if (isset($_SERVER['REQUEST_METHOD'])) {
+            self::$method = self::$rawMethod = strtoupper($_SERVER['REQUEST_METHOD']);
 
-        //对GET POST方法赋值，
-        self::$data['GET'] = &$_GET;
-        if (!$_POST) {
-            $_POST = file_get_contents('php://input') ?: [];
-        }
-        self::$data['POST'] = &$_POST;
-        if (!isset(self::$data[self::$method])) {
-            self::$data[self::$method] = file_get_contents('php://input') ?: []; //其他类型统一读取php输入流
+            //对GET POST方法赋值，
+            self::$data['GET'] = &$_GET;
+            if (!$_POST) {
+                $_POST = file_get_contents('php://input') ?: [];
+            }
+            self::$data['POST'] = &$_POST;
+            if (!isset(self::$data[self::$method])) {
+                self::$data[self::$method] = file_get_contents('php://input') ?: []; //其他类型统一读取php输入流
+            }
         }
 
         //处理上传文件

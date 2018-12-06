@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-06-20 11:53:48
- * @Modified time:      2018-11-06 22:41:40
+ * @Modified time:      2018-12-06 18:26:28
  * @Depends on Linker:  Config
  * @Description:        语言类，提供语言映射
  */
@@ -40,7 +40,7 @@ class Lang
                 if (!isset(self::$data[self::$__i18n])) {
                     self::$data[self::$__i18n] = [];
                 }
-                self::$data[self::$__i18n][$this->__label] = call_user_func_array(self::$autoload, [$this->__label, self::$__i18n]);
+                self::$data[self::$__i18n][$this->__label] = call_user_func_array(self::$autoload, [$this->__label, self::$__i18n]) ?: [];
             }
 
             //是否存在目标字符

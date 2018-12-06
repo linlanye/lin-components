@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-06-20 11:53:48
- * @Modified time:      2018-10-27 21:24:30
+ * @Modified time:      2018-12-06 11:23:49
  * @Depends on Linker:  Config Exception
  * @Description:        HTTP请求类，提供请求相关的一系列操作
  */
@@ -57,12 +57,23 @@ class Request
         return self::$method;
     }
 
+    public static function getHost(): string
+    {
+        self::init();
+        return $_SERVER['HTTP_HOST'] ?? ''; //CLI下默认为空
+    }
+    public static function getPort(): int
+    {
+        self::init();
+        return $_SERVER['SERVER_PORT'] ?? 0; //CLI下默认为0
+    }
+
     //获取请求的相对有效路径
     public static function getURL(): string
     {
         self::init();
         if (!isset($_SERVER['REQUEST_URI'])) {
-            return '/'; //命令行默认根目录
+            return ''; //CLI下默认为''
         }
         if (!self::$url) {
             $script    = basename($_SERVER['SCRIPT_NAME']); //获得入口脚本名
@@ -73,7 +84,6 @@ class Request
             self::$url = explode('?', $url)[0]; //去掉get参数
         }
         return self::$url;
-
     }
     //获得ip
     public static function getIP(): string
@@ -228,7 +238,7 @@ class Request
         $config = Linker::Config()::get('lin')['request'];
 
         //标记运行状态，设置常用的请求及参数
-        self::$rawMethod = $_SERVER['REQUEST_METHOD'] ?? 'POST'; //命令行默认为POST
+        self::$rawMethod = $_SERVER['REQUEST_METHOD'] ?? ''; //CLI下默认为''
         self::$rawMethod = strtoupper(self::$rawMethod);
         self::$method    = self::$rawMethod;
 

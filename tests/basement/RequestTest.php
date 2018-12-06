@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-05-31 14:04:33
- * @Modified time:      2018-10-27 21:26:36
+ * @Modified time:      2018-12-06 11:23:09
  * @Depends on Linker:  Config
  * @Description:        使用控制台测试，默认请求方法为post
  */
@@ -19,11 +19,9 @@ class RequestTest extends TestCase
 
     protected function setUp()
     {
-        $_SERVER['REQUEST_URI'] = '/';
-        // Request::getURL();
-        // var_dump($_SERVER['PHP_SELF']);
-        // var_dump($_SERVER['SCRIPT_FILENAME']);
-        $this->config = Linker::Config()::lin('request');
+        $_SERVER['REQUEST_URI']    = '/';
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $this->config              = Linker::Config()::lin('request');
     }
     protected function tearDown()
     {
@@ -123,6 +121,12 @@ class RequestTest extends TestCase
 
         //复原
         $_SERVER['REQUEST_URI'] = $rawMethod;
+    }
+
+    public function testGetHostPort()
+    {
+        $this->assertSame(Request::getHost(), '');
+        $this->assertSame(Request::getPort(), 0);
     }
 
     public function testUploads()

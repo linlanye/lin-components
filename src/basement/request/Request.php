@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-06-20 11:53:48
- * @Modified time:      2018-12-07 22:39:23
+ * @Modified time:      2018-12-07 22:44:01
  * @Depends on Linker:  Config Exception
  * @Description:        HTTP请求类，提供请求相关的一系列操作
  */
@@ -56,7 +56,7 @@ class Request
         self::init();
         if (function_exists('\getallheaders')) {
             $headers = array_change_key_case(getallheaders(), CASE_UPPER);
-            $header = str_replace('_', '-', $header);
+            $header  = str_replace('_', '-', $header);
             return $headers[strtoupper($header)] ?? null;
         }
 

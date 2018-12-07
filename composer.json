@@ -25,10 +25,8 @@
         "docs": "https://github.com/linlanye/lin-components-docs"
     },
     "autoload": {
-        "files": ["boot.php"],
         "psr-4": {
-            "lin\\": "src",
-            "lin\\tests\\": "tests"
+            "lin\\": "src"
         }
     },
     "config": {

@@ -21,12 +21,32 @@ if (file_exists($vendor)) {
 }
 require $vendor . '/basement/basement/boot.php';
 
-//注册组件
+if (!file_exists(__TMP__)) {
+    mkdir(__TMP__, 0750, true);
+}
+//引入composer自动加载
+require $vendor . '/autoload.php';
+
+//先测试是否满足basement组件要求
+Linker::test([
+    // 'ServerSQL'   => '\\lin\\basement\\server\\sql\\SQLPDO',
+    // 'ServerKV'    => '\\lin\\basement\\server\\kv\\KVLocal',
+    // 'ServerLocal' => '\\lin\\basement\\server\\local\\Local',
+    // 'ServerQueue' => '\\lin\\basement\\server\\queue\\LocalQueue',
+    // 'Log'         => '\\lin\\basement\\log\\log',
+    // 'Exception'   => '\\lin\\basement\\exception\\GeneralException',
+    // 'Debug'       => '\\lin\\basement\\debug\\Debug',
+    // 'Event'       => '\\lin\\basement\\event\\Event',
+    // 'Lang'        => '\\lin\\basement\\lang\\Lang',
+    'Config' => '\\lin\\basement\\config\\Config',
+    // 'Request'     => '\\lin\\basement\\request\\Request',
+]);
+
+//组件
 Linker::register([
     'Config'  => '\\lin\\basement\\config\\Config',
     'Request' => '\\lin\\basement\\request\\Request',
 ], true);
-
 Linker::register([
     'ServerSQL'   => '\\lin\\basement\\server\\sql\\SQLPDO',
     'ServerKV'    => '\\lin\\basement\\server\\kv\\KVLocal',
@@ -41,13 +61,6 @@ Linker::register([
 
 ]);
 
-//引入composer自动加载
-require $vendor . '/autoload.php';
-
 //读取配置
 Linker::Config()::set('lin', include __ROOT__ . '/config/test-lin.php');
 Linker::Config()::set('servers', include __ROOT__ . '/config/test-servers.php');
-
-if (!file_exists(__TMP__)) {
-    mkdir(__TMP__, 0750, true);
-}

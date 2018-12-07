@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/linlanye/basement.git",
-                "reference": "245736de9c730b392fba77f94350043200fa38af"
+                "reference": "228a2732d074a8facd8d24b319df86415b9cfc67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github-api-proxy.cnpkg.org/repos/linlanye/basement/zipball/245736de9c730b392fba77f94350043200fa38af",
-                "reference": "245736de9c730b392fba77f94350043200fa38af",
+                "url": "https://github-api-proxy.cnpkg.org/repos/linlanye/basement/zipball/228a2732d074a8facd8d24b319df86415b9cfc67",
+                "reference": "228a2732d074a8facd8d24b319df86415b9cfc67",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
                 "general",
                 "linlanye"
             ],
-            "time": "2018-11-22T09:28:12+00:00"
+            "time": "2018-12-06T14:48:08+00:00"
         }
     ],
     "packages-dev": [],

@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-06-20 11:53:48
- * @Modified time:      2018-12-07 14:18:25
+ * @Modified time:      2018-12-07 20:51:33
  * @Depends on Linker:  Config
  * @Description:        语言类，提供语言映射
  */
@@ -52,8 +52,8 @@ class Lang
      */
     public static function i18n(string $i18n): bool
     {
+        self::$__i18n = $i18n;
         if (in_array($i18n, self::$__i18nLists)) {
-            self::$__i18n = $i18n;
             return true;
         }
         return false;

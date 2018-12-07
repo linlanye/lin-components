@@ -5,7 +5,6 @@
 	3.在testsuite里面选择要测试的组件文件
 	4.运行phpunit
 -->
-
 <phpunit bootstrap="vendor/basement/basement/tests/boot-test.php">
 	<php>
 		<env name="Config" value="lin\basement\config\Config"/>
@@ -24,15 +23,11 @@
 		<testsuite name="basement">
 			<file>vendor/basement/basement/tests/traits/ConfigTest.php</file>
 			<file>vendor/basement/basement/tests/traits/DebugTest.php</file>
-<!-- 			<file>tests/traits/EventTest.php</file>
-			<file>tests/traits/ExceptionTest.php</file>
-			<file>tests/traits/LangTest.php</file>
-			<file>tests/traits/LogTest.php</file>
-			<file>tests/traits/ServerFileTest.php</file>
-			<file>tests/traits/ServerKVTest.php</file>
-			<file>tests/traits/ServerLocalTest.php</file>
-			<file>tests/traits/ServerQueueTest.php</file>
-			<file>tests/traits/ServerSQLTest.php</file> -->
+			<file>vendor/basement/basement/tests/traits/EventTest.php</file>
+			<file>vendor/basement/basement/tests/traits/ExceptionTest.php</file>
+			<file>vendor/basement/basement/tests/traits/LangTest.php</file>
+			<file>vendor/basement/basement/tests/traits/LogTest.php</file>
+			<file>vendor/basement/basement/tests/traits/RequestTest.php</file>
 		</testsuite>
 	</testsuites>
 </phpunit>

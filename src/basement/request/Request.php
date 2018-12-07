@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-06-20 11:53:48
- * @Modified time:      2018-12-06 13:58:26
+ * @Modified time:      2018-12-07 22:39:23
  * @Depends on Linker:  Config Exception
  * @Description:        HTTP请求类，提供请求相关的一系列操作
  */
@@ -43,15 +43,34 @@ class Request
     public static function setCurrent(array $data): bool
     {
         self::init();
-        self::$data[self::$method] = $data;
-        return true;
+        if (self::$method) {
+            self::$data[self::$method] = $data;
+            return true;
+        }
+        return false;
     }
 
-    public static function getHeader(string $key):  ? string
+    //header头不区分大小写和不区分-和_
+    public static function getHeader(string $header):  ? string
     {
         self::init();
-        $array = array_change_key_case(getallheaders(), CASE_UPPER);
-        return $array[strtoupper($key)] ?? null;
+        if (function_exists('\getallheaders')) {
+            $headers = array_change_key_case(getallheaders(), CASE_UPPER);
+            $header = str_replace('_', '-', $header);
+            return $headers[strtoupper($header)] ?? null;
+        }
+
+        //通过$_SERVER寻找
+        foreach ($_SERVER as $key => $value) {
+            if (substr($key, 0, 5) === 'HTTP_') {
+                $key    = substr($key, 5); //HTTP开头认为是header头
+                $header = str_replace('-', '_', $header); //不区分-和_
+                if (strcasecmp($key, $header) == 0) {
+                    return $value;
+                }
+            }
+        }
+        return null;
     }
 
     public static function getMethod() :  ? string

@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-06-20 11:53:48
- * @Modified time:      2018-12-06 18:26:28
+ * @Modified time:      2018-12-07 14:18:25
  * @Depends on Linker:  Config
  * @Description:        语言类，提供语言映射
  */
@@ -18,15 +18,6 @@ class Lang
     use \basement\Lang;
 
     /**
-     * 获取当前源字符集的标识名
-     * @return string 源字符集的标识名
-     */
-    public function getLabel(): string
-    {
-        return $this->__label;
-    }
-
-    /**
      * 映射源字符为目标字符
      * @param  string $chars 源字符
      * @return string        目标语言字符
@@ -36,16 +27,16 @@ class Lang
         //无目标语言时，返回自身
         if (self::$__i18n) {
             //自动加载
-            if (!isset(self::$data[self::$__i18n][$this->__label])) {
+            if (!isset(self::$data[self::$__i18n][$this->__name])) {
                 if (!isset(self::$data[self::$__i18n])) {
                     self::$data[self::$__i18n] = [];
                 }
-                self::$data[self::$__i18n][$this->__label] = call_user_func_array(self::$autoload, [$this->__label, self::$__i18n]) ?: [];
+                self::$data[self::$__i18n][$this->__name] = call_user_func_array(self::$autoload, [$this->__name, self::$__i18n]) ?: [];
             }
 
             //是否存在目标字符
-            if (isset(self::$data[self::$__i18n][$this->__label][$chars])) {
-                $chars = self::$data[self::$__i18n][$this->__label][$chars];
+            if (isset(self::$data[self::$__i18n][$this->__name][$chars])) {
+                $chars = self::$data[self::$__i18n][$this->__name][$chars];
             } elseif (is_callable($this->map)) {
                 $chars = call_user_func($this->map, $chars);
             }
@@ -78,7 +69,7 @@ class Lang
     private static $autoload;
     private $map;
 
-    public function __construct(string $label = '')
+    public function __construct(string $name = '')
     {
         $config = Linker::Config()::get('lin')['lang']['default'];
         if (!self::$autoload) {
@@ -87,8 +78,8 @@ class Lang
         if (!self::$__i18n) {
             self::$__i18n = $config['i18n'];
         }
-        $this->map     = $config['map'];
-        $this->__label = $label ?: $config['label'];
+        $this->map    = $config['map'];
+        $this->__name = $name ?: $config['name'];
     }
     public static function clean(string $i18n = ''): bool
     {

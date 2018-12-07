@@ -1,0 +1,38 @@
+<!--
+开发basement标准组件需单独测试。
+	1.拷贝此文件到项目根目录
+	2.在env中填入需要注册的组件
+	3.在testsuite里面选择要测试的组件文件
+	4.运行phpunit
+-->
+
+<phpunit bootstrap="vendor/basement/basement/tests/boot-test.php">
+	<php>
+		<env name="Config" value="lin\basement\config\Config"/>
+		<env name="Debug" value="lin\basement\debug\Debug"/>
+		<env name="Event" value="lin\basement\event\Event"/>
+		<env name="Exception" value="lin\basement\exception\GeneralException"/>
+		<env name="Lang" value="lin\basement\lang\Lang"/>
+		<env name="Log" value="lin\basement\log\log"/>
+		<env name="Request" value="lin\basement\request\Request"/>
+		<env name="ServerKV" value="lin\basement\server\kv\KVLocal"/>
+		<env name="ServerLocal" value="lin\basement\server\local\Local"/>
+		<env name="ServerQueue" value="lin\basement\server\queue\LocalQueue"/>
+		<env name="ServerSQL" value="lin\basement\server\sql\SQLPDO"/>
+	</php>
+	<testsuites>
+		<testsuite name="basement">
+			<file>vendor/basement/basement/tests/traits/ConfigTest.php</file>
+			<file>vendor/basement/basement/tests/traits/DebugTest.php</file>
+<!-- 			<file>tests/traits/EventTest.php</file>
+			<file>tests/traits/ExceptionTest.php</file>
+			<file>tests/traits/LangTest.php</file>
+			<file>tests/traits/LogTest.php</file>
+			<file>tests/traits/ServerFileTest.php</file>
+			<file>tests/traits/ServerKVTest.php</file>
+			<file>tests/traits/ServerLocalTest.php</file>
+			<file>tests/traits/ServerQueueTest.php</file>
+			<file>tests/traits/ServerSQLTest.php</file> -->
+		</testsuite>
+	</testsuites>
+</phpunit>

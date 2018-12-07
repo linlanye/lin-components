@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-06-11 15:47:02
- * @Modified time:      2018-11-22 20:45:54
+ * @Modified time:      2018-12-07 14:19:24
  * @Depends on Linker:  Config
  * @Description:        测试语言映射
  */
@@ -19,21 +19,21 @@ class LangTest extends TestCase
     {
         Lang::reset();
     }
-    public function testLabel()
+    public function testName()
     {
         //实例化时候设置标签名
-        $label = md5(mt_rand());
-        $Lang  = new Lang($label);
-        $this->assertSame($label, $Lang->getLabel());
+        $name = md5(mt_rand());
+        $Lang = new Lang($name);
+        $this->assertSame($name, $Lang->getName());
 
         //设置标签名
-        $label = md5(mt_rand());
-        $Lang->setLabel($label);
-        $this->assertSame($label, $Lang->getLabel());
+        $name = md5(mt_rand());
+        $Lang->setName($name);
+        $this->assertSame($name, $Lang->getName());
 
         //默认标签
         $Lang = new Lang;
-        $this->assertSame(Linker::Config()::lin('lang.default.label'), $Lang->getLabel());
+        $this->assertSame(Linker::Config()::lin('lang.default.name'), $Lang->getName());
     }
     public function testI18N()
     {
@@ -51,16 +51,16 @@ class LangTest extends TestCase
     {
         //自定义加载规则
         $origin = md5(mt_rand());
-        $label  = md5(mt_rand());
+        $name   = md5(mt_rand());
         $i18n   = 'en';
         Lang::i18n($i18n);
-        Lang::autoload(function ($label, $i18n) use ($origin) {
-            return [$origin => "$label$i18n"];
+        Lang::autoload(function ($name, $i18n) use ($origin) {
+            return [$origin => "$name$i18n"];
         });
-        $Lang = new Lang($label);
+        $Lang = new Lang($name);
 
         //断言找到映射
-        $this->assertSame($Lang->map($origin), $label . $i18n);
+        $this->assertSame($Lang->map($origin), $name . $i18n);
         //断言未找到映射
         $origin2 = md5(mt_rand());
         $this->assertSame($Lang->map($origin2), $origin2);
@@ -70,7 +70,7 @@ class LangTest extends TestCase
         Linker::Config()::lin(['lang.default.map' => function ($chars) use ($fiexed) {
             return $fiexed;
         }]);
-        $Lang = new Lang($label);
+        $Lang = new Lang($name);
         $this->assertSame($fiexed, $Lang->map(mt_rand()));
         $this->assertSame($fiexed, $Lang->map(mt_rand()));
     }

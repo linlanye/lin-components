@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-10-17 15:07:30
- * @Modified time:      2018-11-08 10:05:01
+ * @Modified time:      2018-12-07 17:10:25
  * @Depends on Linker:  Config Lang Request
  * @Description:        调试类
  */
@@ -288,7 +288,7 @@ class Debug
         }
 
         $Lang = Linker::Lang(true); //需要多元数据进行翻译
-        $Lang->setLabel('lin');
+        $Lang->setName('lin');
 
         if ($lang_mode == 'both') {
             $data['SYSTEM'] = self::getLang($data['SYSTEM'], $Lang); //翻译系统信息

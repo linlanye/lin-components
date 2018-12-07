@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2016-12-25 20:53:28
- * @Modified time:      2018-11-06 22:45:24
+ * @Modified time:      2018-12-07 17:10:36
  * @Depends on Linker:  Config Log Lang
  * @Description:        异常和错误处理
  */
@@ -34,7 +34,7 @@ class Parser
         //是否多语言
         if ($config['lang'] && $config['lang'] !== 'none') {
             $Lang = Linker::Lang(true);
-            $Lang->setLabel('lin');
+            $Lang->setName('lin');
             $msg = $Lang->map($msg); //获得翻译后的消息，只翻译主消息
         }
         if ($sub_msg) {
@@ -145,7 +145,7 @@ class Parser
         //是否多语言
         if ($config['lang'] && $config['lang'] !== 'none') {
             $Lang = Linker::Lang(true);
-            $Lang->setLabel('lin');
+            $Lang->setName('lin');
             $msg = $Lang->map($msg); //获得翻译后的消息，只翻译主消息
         }
 

@@ -1,5 +1,5 @@
 <?php
-$root = __DIR__; //整个应用根目录
+$root = dirname(__DIR__); //整个应用根目录
 $lin  = [
     'data'       => $root . '/runtime/data', //数据目录
     'cache'      => $root . '/runtime/cache', //缓存目录

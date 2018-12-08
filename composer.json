@@ -27,7 +27,10 @@
     "autoload": {
         "psr-4": {
             "lin\\": "src"
-        }
+        },
+        "file": [
+            "boot.php"
+        ]
     },
     "config": {
         "preferred-install": "dist",

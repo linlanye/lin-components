@@ -28,7 +28,7 @@
         "psr-4": {
             "lin\\": "src"
         },
-        "file": [
+        "files": [
             "boot.php"
         ]
     },

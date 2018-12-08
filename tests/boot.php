@@ -14,7 +14,7 @@ if (file_exists($autoload)) {
 } else if (file_exists($autoload2)) {
     require $autoload2;
 } else {
-    throw new Exception("can not find autoload.php file", 1);
+    throw new Exception("can not find autoload.php file");
 }
 
 //注册组件

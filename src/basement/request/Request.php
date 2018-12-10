@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-06-20 11:53:48
- * @Modified time:      2018-12-10 17:26:38
+ * @Modified time:      2018-12-10 20:34:57
  * @Depends on Linker:  Config Exception
  * @Description:        HTTP请求类，提供请求相关的一系列操作
  */
@@ -160,62 +160,43 @@ class Request
     {
         return isset(self::$data[self::$method][$param]);
     }
-    // //动态读写请求参数
-    // public function __call($method, $arg)
-    // {
-    //     $method = strtoupper($method);
-    //     if (!isset(self::$data[$method])) {
-    //         self::$data[$method] = [];
-    //     }
-    //     $arg = $arg[0] ?? null; //只接受单参数;
-
-    //     //链式设置
-    //     if (is_array($arg)) {
-    //         foreach ($arg as $key => $value) {
-    //             $nodes = explode('.', $key);
-    //             $this->setHanlde(self::$data[$method], $nodes, $value);
-    //         }
-    //         return true;
-    //     }
-
-    //     if (strlen($arg) > 0) {
-    //         $nodes = explode('.', $arg);
-    //         return $this->getHandle(self::$data[$method], $nodes);
-    //     } else {
-    //         return self::$data[$method]; //没有设置获得具体键，则返回所有
-    //     }
-    // }
-
     /**
      * 链式调用读写参数
-     * @param  string|array $stringOrArray 字符串时为读取，数组为写入，形如['post.id'=>'1']
-     * @return mixed|null   设置参数时返回bool，读取返回具体值
+     * @param  string|array $stringOrArray 字符串时为读取，数组为写入，形如['post.id'=>'1'],*返回所有，空返回null
+     * @return mixed|null   设置参数时返回true，读取返回具体值或null
      */
     public function params($stringOrArray = '*')
     {
         //设置
         if (is_array($stringOrArray)) {
             foreach ($stringOrArray as $key => $value) {
+                $key    = rtrim($key, '.'); //去掉右边.
                 $nodes  = explode('.', $key);
                 $method = strtoupper($nodes[0]);
                 unset($nodes[0]);
-                $this->setHanlde(self::$data[$method], $nodes, $value);
+                if ($nodes) {
+                    $this->setHanlde(self::$data[$method], $nodes, $value);
+                } else {
+                    if (!is_array($value)) {
+                        $value = [$value]; //根节点情况，$params是整个方法携带的参数，value非数组需要为数组形式
+                    }
+                    self::$data[$method] = $value;
+                }
             }
             return true;
         }
 
         //读取
         if ($stringOrArray == '*') {
-            return self::$data; //返回所有
+            return self::$data; //*返回所有
         }
-        $nodes  = explode('.', $stringOrArray);
-        $method = strtoupper($nodes[0]);
-        unset($nodes[0]);
-        $ref = &self::$data[$method];
+        if (!$stringOrArray) {
+            return null; //空返回null
+        }
+        $nodes    = explode('.', rtrim($stringOrArray, '.'));
+        $nodes[0] = strtoupper($nodes[0]); //第一个元素为方法名
+        $ref      = &self::$data;
         foreach ($nodes as $key) {
-            if (!$key) {
-                break;
-            }
             if (isset($ref[$key])) {
                 $ref = &$ref[$key];
             } else {
@@ -228,13 +209,7 @@ class Request
     //链式读参数
     private function setHanlde(&$params, $nodes, $value)
     {
-        if (!$nodes && !is_array($value)) {
-            $value = [$value]; //根节点情况，$params是整个方法携带的参数，value非数组需要为数组形式
-        }
         foreach ($nodes as $key) {
-            if (!$key) {
-                break;
-            }
             if (!isset($params[$key])) {
                 $params[$key] = [];
             }

@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-05-31 14:04:33
- * @Modified time:      2018-12-10 17:26:53
+ * @Modified time:      2018-12-10 20:33:26
  * @Depends on Linker:  Config
  * @Description:        使用控制台测试，默认请求方法为post
  */
@@ -119,16 +119,21 @@ class RequestTest extends TestCase
         $Request->params(["$method.$k0.$k1.$k2" => $v]);
         $this->assertSame($Request->params("$method.$k0.$k1.$k2"), $v);
         $this->assertSame($Request->params($method), [$k0 => [$k1 => [$k2 => $v]]]);
-        $this->assertSame($Request->params(), [strtoupper($method) => [$k0 => [$k1 => [$k2 => $v]]]]);
+        $all = [strtoupper($method) => [$k0 => [$k1 => [$k2 => $v]]]];
+        $this->assertSame($Request->params(), $all);
+        $this->assertSame($Request->get($method), current($all));
 
         //特殊情况
-        $Request->params(["$method" => $v]);
-        $this->assertSame($Request->get($method), [$v]);
-        $this->assertSame($Request->params(), [$v]);
+        $all = [strtoupper($method) => [$v]];
+        $Request->params([$method => $v]);
+        $this->assertSame($Request->get($method), current($all));
+        $this->assertSame($Request->params(), $all);
 
         $Request->params(["$method." => $v]);
         $this->assertSame($Request->get($method), [$v]);
-        $this->assertSame($Request->params(), [$v]);
+        $this->assertSame($Request->params(), $all); //获取所有
+        $this->assertSame($Request->params('*'), $all); //获取所有
+        $this->assertSame($Request->params(''), null); //什么都不获取
 
     }
 

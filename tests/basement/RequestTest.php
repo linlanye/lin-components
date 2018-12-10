@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-05-31 14:04:33
- * @Modified time:      2018-12-06 14:02:41
+ * @Modified time:      2018-12-10 17:26:53
  * @Depends on Linker:  Config
  * @Description:        使用控制台测试，默认请求方法为post
  */
@@ -107,8 +107,8 @@ class RequestTest extends TestCase
         $this->assertSame($Request->$key, Request::getCurrent()[$key]);
     }
 
-    //测试某个请求方法携带参数的动态读写
-    public function testDynamicMethod()
+    //测试动态读写参数
+    public function testParams()
     {
         $method  = md5(mt_rand());
         $k0      = md5(mt_rand());
@@ -116,9 +116,20 @@ class RequestTest extends TestCase
         $k2      = md5(mt_rand());
         $v       = md5(mt_rand());
         $Request = new Request;
-        $Request->$method(["$k0.$k1.$k2" => $v]);
-        $this->assertSame($Request->$method("$k0.$k1.$k2"), $v);
-        $this->assertSame($Request->$method(), [$k0 => [$k1 => [$k2 => $v]]]);
+        $Request->params(["$method.$k0.$k1.$k2" => $v]);
+        $this->assertSame($Request->params("$method.$k0.$k1.$k2"), $v);
+        $this->assertSame($Request->params($method), [$k0 => [$k1 => [$k2 => $v]]]);
+        $this->assertSame($Request->params(), [strtoupper($method) => [$k0 => [$k1 => [$k2 => $v]]]]);
+
+        //特殊情况
+        $Request->params(["$method" => $v]);
+        $this->assertSame($Request->get($method), [$v]);
+        $this->assertSame($Request->params(), [$v]);
+
+        $Request->params(["$method." => $v]);
+        $this->assertSame($Request->get($method), [$v]);
+        $this->assertSame($Request->params(), [$v]);
+
     }
 
     public function testGetURL()

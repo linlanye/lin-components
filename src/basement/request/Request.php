@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-06-20 11:53:48
- * @Modified time:      2018-12-07 22:44:01
+ * @Modified time:      2018-12-10 17:26:38
  * @Depends on Linker:  Config Exception
  * @Description:        HTTP请求类，提供请求相关的一系列操作
  */
@@ -160,55 +160,87 @@ class Request
     {
         return isset(self::$data[self::$method][$param]);
     }
-    //动态读写请求参数
-    public function __call($method, $arg)
-    {
-        if (!isset(self::$data[$method])) {
-            self::$data[$method] = [];
-        }
-        $arg = $arg[0] ?? null; //只接受单参数;
+    // //动态读写请求参数
+    // public function __call($method, $arg)
+    // {
+    //     $method = strtoupper($method);
+    //     if (!isset(self::$data[$method])) {
+    //         self::$data[$method] = [];
+    //     }
+    //     $arg = $arg[0] ?? null; //只接受单参数;
 
-        //链式设置
-        if (is_array($arg)) {
-            foreach ($arg as $key => $value) {
-                $nodes = explode('.', $key);
+    //     //链式设置
+    //     if (is_array($arg)) {
+    //         foreach ($arg as $key => $value) {
+    //             $nodes = explode('.', $key);
+    //             $this->setHanlde(self::$data[$method], $nodes, $value);
+    //         }
+    //         return true;
+    //     }
+
+    //     if (strlen($arg) > 0) {
+    //         $nodes = explode('.', $arg);
+    //         return $this->getHandle(self::$data[$method], $nodes);
+    //     } else {
+    //         return self::$data[$method]; //没有设置获得具体键，则返回所有
+    //     }
+    // }
+
+    /**
+     * 链式调用读写参数
+     * @param  string|array $stringOrArray 字符串时为读取，数组为写入，形如['post.id'=>'1']
+     * @return mixed|null   设置参数时返回bool，读取返回具体值
+     */
+    public function params($stringOrArray = '*')
+    {
+        //设置
+        if (is_array($stringOrArray)) {
+            foreach ($stringOrArray as $key => $value) {
+                $nodes  = explode('.', $key);
+                $method = strtoupper($nodes[0]);
+                unset($nodes[0]);
                 $this->setHanlde(self::$data[$method], $nodes, $value);
             }
             return true;
         }
 
-        if (strlen($arg) > 0) {
-            $nodes = explode('.', $arg);
-            return $this->getHandle(self::$data[$method], $nodes);
-        } else {
-            return self::$data[$method]; //没有设置获得具体键，则返回所有
+        //读取
+        if ($stringOrArray == '*') {
+            return self::$data; //返回所有
         }
-    }
-    //链式读参数
-    private function setHanlde(&$params, &$nodes, $value)
-    {
-        $k = current($nodes);
-        next($nodes); //节点有配置，为避免数字索引漏掉，下面的判断排除数字情况
-        if (is_numeric(current($nodes)) || current($nodes)) {
-            $params[$k] = $this->setHanlde($params[$k], $nodes, $value); //递归进入最底层节点
-        } else {
-            $params[$k] = $value; //进入最底层节点后，赋值
-        }
-        return $params;
-    }
-    //链式写参数
-    private function getHandle(&$params, &$nodes)
-    {
-        $k = current($nodes);
-        if (isset($params[$k])) {
-            next($nodes); //节点有配置，为避免数字索引漏掉，下面的判断排除数字情况
-            if (is_numeric(current($nodes)) || current($nodes)) {
-                return $this->getHandle($params[$k], $nodes); //如果还需调用子节点，否则返回当前节点配置
+        $nodes  = explode('.', $stringOrArray);
+        $method = strtoupper($nodes[0]);
+        unset($nodes[0]);
+        $ref = &self::$data[$method];
+        foreach ($nodes as $key) {
+            if (!$key) {
+                break;
             }
-            return $params[$k];
-        } else {
-            return null; //节点没有配置信息
+            if (isset($ref[$key])) {
+                $ref = &$ref[$key];
+            } else {
+                return null;
+            }
         }
+        return $ref;
+    }
+
+    //链式读参数
+    private function setHanlde(&$params, $nodes, $value)
+    {
+        if (!$nodes && !is_array($value)) {
+            $value = [$value]; //根节点情况，$params是整个方法携带的参数，value非数组需要为数组形式
+        }
+        foreach ($nodes as $key) {
+            if (!$key) {
+                break;
+            }
+            if (!isset($params[$key])) {
+                $params[$key] = [];
+            }
+            $params = &$params[$key];
+        }
+        $params = $value;
     }
 
     //清楚某个方法下的数据

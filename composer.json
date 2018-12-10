@@ -22,7 +22,7 @@
     "support": {
         "email": "linlanye@sina.cn",
         "issues": "https://github.com/linlanye/lin-components/issues",
-        "docs": "https://github.com/linlanye/lin-components-docs"
+        "docs": "https://github.com/linlanye/lin-docs"
     },
     "autoload": {
         "psr-4": {

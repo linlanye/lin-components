@@ -13,13 +13,13 @@
 <!-- 	<logging>
 		<log type="coverage-clover" target="d:/result.xml"/>
 	</logging> -->
-	<groups>
+<!-- 	<groups>
 		<exclude>
 			<group>sleep</group>
 			<group>server</group>
 			<group>database</group>
 		</exclude>
-	</groups>
+	</groups> -->
 	<filter>
 		<whitelist processUncoveredFilesFromWhitelist="true">
 			<directory suffix="Test.php">tests/basement</directory>

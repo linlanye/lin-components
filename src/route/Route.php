@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-01-13 23:30:47
- * @Modified time:      2018-09-29 13:37:32
+ * @Modified time:      2018-12-11 10:20:01
  * @Depends on Linker:  Config Request
  * @Description:        路由运行和获得路由规则构建器
  */
@@ -45,7 +45,7 @@ class Route
         }
 
         //运行解析器获得执行流程
-        if ($files === null) {
+        if (!$files) {
             $rules = null;
         } else {
             $Parser = new Parser($config);

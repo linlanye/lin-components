@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-09-06 11:35:36
- * @Modified time:      2018-11-13 09:49:32
+ * @Modified time:      2018-12-11 09:37:25
  * @Depends on Linker:  Debug
  * @Description:        视图信息记录
  */
@@ -14,8 +14,8 @@ use Linker;
 class Debug
 {
     private $Debug;
-    private static $counts = 0; //记录加载总时间
-    private static $time   = [];
+    private static $counts = 0; //记录加载次数
+    private static $time   = 0; //总时间
     public function __construct()
     {
         $this->Debug = Linker::Debug(true);
@@ -29,12 +29,10 @@ class Debug
     }
     public function parse($view_file, $t)
     {
-        $prev = end(self::$time) ?: 0;
-        reset(self::$time);
-        self::$time[] = $t;
+        self::$time += $t;
         ++self::$counts;
-        $this->Debug->set('文件数', self::$counts . $this->getSubInfo($t));
-        $info = $view_file . $this->getSubInfo($t - $prev); //parse为递归，实际时间需减去上一次
+        $this->Debug->set('文件数', self::$counts . $this->getSubInfo(self::$time));
+        $info = $view_file . $this->getSubInfo($t);
         $this->Debug->append('文件明细', $info);
     }
 

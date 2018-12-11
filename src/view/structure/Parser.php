@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-06-20 11:53:48
- * @Modified time:      2018-11-02 13:43:55
+ * @Modified time:      2018-12-11 09:11:25
  * @Depends on Linker:  Config Exception
  * @Description:        解析视图
  */
@@ -153,7 +153,7 @@ class Parser
             $parent  = preg_split($this->tag['location'], $parent); //定位父模板的继承点
             $n       = count($parent);
             if ($n < 2) {
-                $content = $parent[0] . $content; //若无定位点，则等同于将内容至于继承模版之后
+                $content = $parent[0] . $content; //若无定位点，则等同于将内容置于继承模版之后
             } else {
                 $_content = '';
                 for ($i = 0; $i < $n - 1; $i++) {

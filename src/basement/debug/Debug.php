@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-10-17 15:07:30
- * @Modified time:      2018-12-07 17:10:25
+ * @Modified time:      2018-12-12 22:59:22
  * @Depends on Linker:  Config Lang Request
  * @Description:        调试类
  */
@@ -169,22 +169,22 @@ class Debug
         } else {
             unset(self::$data[$name]);
         }
-        self::$flag = [];
         return true;
     }
-    //重置
-    public static function reset(): bool
+    //清除flag数据
+    public static function cleanFlag(string $flagName = ''): bool
     {
-        self::$status = 0;
-        self::$data   = [];
-        self::$flag   = [];
+        if ($flagName) {
+            self::$flag = [];
+        } else {
+            unset(self::$flag[$flagName]);
+        }
         return true;
     }
 
     //自动设立开头结尾标识
     public static function flag(string $flagName): bool
     {
-        $flagName = 'flag ' . $flagName;
         if (isset(self::$flag[$flagName])) {
             self::endFlag($flagName);
         } else {

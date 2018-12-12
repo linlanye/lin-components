@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-05-26 08:13:57
- * @Modified time:      2018-08-29 16:58:52
+ * @Modified time:      2018-12-12 22:59:30
  * @Depends on Linker:  None
  * @Description:        测试调试类，该类属于全局变量，测试方法顺序不能变
  */
@@ -58,6 +58,14 @@ class DebugTest extends TestCase
 
         Debug::clean($name); //只清理该调试
         $this->assertNull($this->Debug->getAll());
+
+        //测试清除flag
+        Debug::flag($name);
+        $this->assertFalse(empty($this->Debug->getFlag($name)));
+
+        Debug::cleanFlag($name);
+        $this->assertNull($this->Debug->getFlag());
+
     }
 
     public function testGet()
@@ -95,9 +103,8 @@ class DebugTest extends TestCase
         $this->assertTrue(Debug::endFlag($flag));
         $this->assertFalse(Debug::endFlag($flag));
         $this->assertNotNull(Debug::getFlag($flag));
-
         $this->assertNull(Debug::getFlag('noneFlag'));
-        Debug::clean();
+        Debug::cleanFlag();
     }
     public function testDump()
     {

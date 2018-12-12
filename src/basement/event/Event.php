@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2016-12-19 22:10:50
- * @Modified time:      2018-11-05 16:03:04
+ * @Modified time:      2018-12-12 22:49:26
  * @Depends on Linker:  Config Exception
  * @Description:        事件监听处理
  */
@@ -74,7 +74,8 @@ class Event
         }
         return true;
     }
-    public static function reset(): bool
+    //测试用
+    public static function _reset(): bool
     {
         self::$data   = [];
         self::$status = 0;

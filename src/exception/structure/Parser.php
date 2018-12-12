@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2016-12-25 20:53:28
- * @Modified time:      2018-12-07 17:10:36
+ * @Modified time:      2018-12-12 15:05:37
  * @Depends on Linker:  Config Log Lang
  * @Description:        异常和错误处理
  */
@@ -14,10 +14,17 @@ use Linker;
 class Parser
 {
     private static $status = 0;
+    private static $config;
+
+    public static function loadConfig()
+    {
+        self::$config = Linker::Config()::get('lin')['exception'];
+    }
+
     //自定义异常处理
     public static function setException($Exception)
     {
-        $config = Linker::Config()::get('lin')['exception']['exception'];
+        $config = self::$config['exception'];
 
         //获取参数
         $log_msg = $msg = $Exception->getMessage();
@@ -108,7 +115,7 @@ class Parser
     //设置错误并输出
     public static function setError($level, $msg, $file, $line)
     {
-        $config = Linker::Config()::get('lin')['exception']['error'];
+        $config = self::$config['error'];
         switch ($level) {
             //提醒级别
             case E_NOTICE:

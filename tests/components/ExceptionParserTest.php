@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-07-03 17:11:01
- * @Modified time:      2018-11-07 10:05:18
+ * @Modified time:      2018-12-12 15:05:21
  * @Depends on Linker:  Config
  * @Description:        测试自定义异常处理
  */
@@ -54,6 +54,7 @@ class ExceptionParserTest extends TestCase
         //预言记录日志
         $this->Log->expects($this->exactly(1))->method('record');
 
+        Parser::loadConfig();
         //执行
         Parser::setException($Exception);
 
@@ -77,6 +78,7 @@ class ExceptionParserTest extends TestCase
         //预言记录日志
         $this->Log->expects($this->exactly(1))->method('record');
 
+        Parser::loadConfig();
         //执行
         Parser::setError($level, $msg, $file, $line);
     }

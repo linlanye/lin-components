@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-12-26 14:50:55
- * @Modified time:      2018-08-29 16:58:27
+ * @Modified time:      2018-12-13 21:02:08
  * @Depends on Linker:  Config
  * @Description:        memcached基类，采用php扩展的memcache和memcached类内置的多服务器映射方式
  */
@@ -28,7 +28,7 @@ abstract class BaseMemcached
         $this->init($DriverOrIndex, $config['driver']['memcached']['use']);
     }
 
-    public function setPrefix($prefix): bool
+    public function setPrefix(string $prefix): bool
     {
         $this->prefix = $prefix;
         return true;

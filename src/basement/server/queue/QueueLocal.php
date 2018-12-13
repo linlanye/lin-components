@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-11-28 09:09:26
- * @Modified time:      2018-11-02 13:57:54
+ * @Modified time:      2018-12-13 22:20:43
  * @Depends on Linker:  Config Exception
  * @Description:        使用本地文件模拟可靠队列服务器，在并发场景下仍可保持数据一致性。
  *                      若需转载或通过其它语言重写本算法实现，请注明原作者为林澜叶，原出处为lin框架
@@ -76,10 +76,10 @@ class QueueLocal
     private static $THRESHOLD = 0x40000000; //进行重整文件的冗余文件大小，不小于0，不可超过PHP_INT_MAX，默认1g
     private static $caches    = [];
     private $Debug;
-    public function __construct($name = null)
+    public function __construct()
     {
         $config       = Linker::Config()::get('lin')['server']['queue'];
-        $this->__name = $name ?: $config['default']['name']; //此处总会创建默认的队列名
+        $this->__name = $config['default']['name']; //此处总会创建默认的队列名
         $this->Debug  = $config['debug'] ? new Debug : null;
 
         $config     = $config['driver']['local'];
@@ -97,7 +97,7 @@ class QueueLocal
      * @param  bool $current 只关闭当前队列，否则关闭所有队列
      * @return bool          关闭成功
      */
-    public function close($current = false): bool
+    public function close(bool $current = false): bool
     {
         if ($current) {
             if (isset(self::$caches[$this->__name])) {
@@ -117,20 +117,10 @@ class QueueLocal
         return true;
     }
 
-    //设置触发冗余文件整理的阈值
-    public function setThreshold(int $THRESHOLD): bool
-    {
-        if ($THRESHOLD > PHP_INT_MAX) {
-            $this->exception('冗余文件阈值不可超过PHP_INT_MAX', PHP_INT_MAX);
-        }
-        self::$THRESHOLD = $THRESHOLD;
-        return true;
-    }
-
     //冗余文件整理, 整理文件时候会阻塞读写
-    public function maintain($all = false): void
+    public function maintain(bool $isAll = false)
     {
-        if ($all) {
+        if ($isAll) {
             //整理所有队列文件
             $name = $this->__name;
             $list = glob($this->path . '*.lq');
@@ -147,8 +137,17 @@ class QueueLocal
             $this->__name = $name; //最后整理当前队列
         }
         $this->handleMaintain();
-
     }
+    //设置触发冗余文件整理的阈值
+    public static function setThreshold(int $THRESHOLD): bool
+    {
+        if ($THRESHOLD > PHP_INT_MAX) {
+            $this->exception('冗余文件阈值不可超过PHP_INT_MAX', PHP_INT_MAX);
+        }
+        self::$THRESHOLD = $THRESHOLD;
+        return true;
+    }
+
     /*********/
 
     private function handlePush($data, $amount)

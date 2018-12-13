@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-01-03 17:43:41
- * @Modified time:      2018-10-23 13:16:48
+ * @Modified time:      2018-12-13 21:02:03
  * @Depends on Linker:  Config
  * @Description:        KV服务器，通过Redis类实现，采用hash方式，跟据键名散列到不同的服务器
  */
@@ -108,7 +108,11 @@ class KVRedis extends HashServer
         $this->prefix  = $config['prefix']; //前缀
         $this->init('redis', $DriverOrIndex, $config['driver']['redis']['use']);
     }
-
+    public function setPrefix(string $prefix): bool
+    {
+        $this->prefix = $prefix;
+        return true;
+    }
     //根据使用的服务器索引获得驱动
     protected function newConnection(array $config, $index):  ? object
     {

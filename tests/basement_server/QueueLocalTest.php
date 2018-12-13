@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-05-29 10:36:16
- * @Modified time:      2018-09-05 09:06:05
+ * @Modified time:      2018-12-13 22:15:35
  * @Depends on Linker:  None
  * @Description:        测试本地文件模拟队列服务器
  */
@@ -48,11 +48,6 @@ class QueueLocalTest extends TestCase
         $name = md5(mt_rand());
         $this->Driver->setName($name);
         $this->assertSame($this->Driver->getName(), $name);
-
-        //初始化队列名
-        $name   = md5(mt_rand());
-        $Driver = new QueueLocal($name);
-        $this->assertSame($Driver->getName(), $name);
     }
 
     public function testPop()
@@ -125,7 +120,7 @@ class QueueLocalTest extends TestCase
     public function testMaintain()
     {
         $max_len = strlen(implode('', $this->data));
-        $this->Driver->setThreshold($max_len); //设置最大冗余大小
+        QueueLocal::setThreshold($max_len); //设置最大冗余大小
         $this->Driver->setName('new'); //新队列
         $this->Driver->multiPush($this->data); //数据
         $queue_dir = Linker::Config()::lin('server.queue.driver.local.path');
@@ -149,7 +144,7 @@ class QueueLocalTest extends TestCase
         $this->assertTrue(strlen($content) < $max_len);
 
         /****测试冗余文件手动整理****/
-        $this->Driver->setThreshold(PHP_INT_MAX);
+        QueueLocal::setThreshold(PHP_INT_MAX);
         $this->Driver->setName('new2'); //新队列2
         $this->Driver->multiPush($this->data); //存入又取出数据
         $this->Driver->pop($max_len);

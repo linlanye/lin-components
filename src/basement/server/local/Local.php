@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-04-19 17:11:52
- * @Modified time:      2018-12-06 15:03:45
+ * @Modified time:      2018-12-13 21:52:26
  * @Depends on Linker:  Config Exception
  * @Description:        访问本地文件读写
  */
@@ -140,7 +140,7 @@ class Local
     }
     /******************/
     private $Debug;
-    public function __construct($path = null)
+    public function __construct(string $path = null)
     {
         $config       = Linker::Config()::get('lin')['server']['local'];
         $path         = $path ?: $config['path'];

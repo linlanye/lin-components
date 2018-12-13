@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-04-21 20:26:45
- * @Modified time:      2018-11-06 22:58:49
+ * @Modified time:      2018-12-13 08:48:33
  * @Depends on Linker:  Config
  * @Description:        高效日志类，提供三种服务器写入，并且只在脚本运行完后批量写入。
  *                      注：（在析构函数或register_shutdown_function里调用本类可能出现无法写入）
@@ -71,15 +71,16 @@ class Log
 
         if (!self::$init) {
             self::$init = 1;
-            register_shutdown_function(['\\lin\\basement\\log\\Log', '_shutdown_write_H7alziM1dsOz0d84'], $config); //注册日志批量写
+            register_shutdown_function(['\\lin\\basement\\log\\Log', '_shutdown_write_H7alziM1dsOz0d84']); //注册日志批量写
         }
     }
     //脚步运行完后用，乱码为防止用户调用
-    public static function _shutdown_write_H7alziM1dsOz0d84($config)
+    public static function _shutdown_write_H7alziM1dsOz0d84()
     {
         if (empty(self::$data)) {
             return true;
         }
+        $config = Linker::Config()::get('lin')['log'];
         switch ($config['use']) {
             case 'sql':
                 $Driver = new SQLHandler;

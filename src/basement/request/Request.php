@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-06-20 11:53:48
- * @Modified time:      2018-12-10 20:34:57
+ * @Modified time:      2018-12-13 10:44:13
  * @Depends on Linker:  Config Exception
  * @Description:        HTTP请求类，提供请求相关的一系列操作
  */
@@ -146,17 +146,18 @@ class Request
         self::init();
     }
     //动态获取当前请求类型所携带的某个参数
-    public function __get($param)
+    public function __get(string $param)
     {
         return self::$data[self::$method][$param] ?? null;
     }
     //动态设置当前请求类型所携带的某个参数
-    public function __set($param, $value)
+    public function __set(string $param, $value) : bool
     {
         self::$data[self::$method][$param] = $value;
+        return true;
     }
     //动态查看当前请求类型是否存在某个参数
-    public function __isset($param)
+    public function __isset(string $param): bool
     {
         return isset(self::$data[self::$method][$param]);
     }
@@ -219,9 +220,10 @@ class Request
     }
 
     //清楚某个方法下的数据
-    public static function clean(string $method = '') : bool
+    public static function clean(string $method = ''): bool
     {
         if ($method) {
+            $method = strtoupper($method);
             unset(self::$data[$method]);
         } else {
             self::$data = [];

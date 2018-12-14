@@ -3,13 +3,13 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-11-21 10:14:11
- * @Modified time:      2018-11-01 16:55:16
+ * @Modified time:      2018-12-14 14:02:36
  * @License:            MIT
  * @Description:        基于单向散列的对称加密算法，用于散列的算法可变，命名为lse(lin symmetric(secure) encryption)，本算法为林澜叶个人独创。
  *                      当前使用的单向散列算法为md5，对应16字节密钥，并基于字节进行加密。注：本算法不提供数据校验
  *                      算法原理：选取单向散列算法，其输出固定长为m字节，生成m字节随机偏置b，每一轮的密钥由上一轮的密钥和偏置b经过非线性运算后，将其
  *                      做一次单向散列，得到该轮密钥。数据的每一字节与密钥的16个字节顺序异或，由此得到密文。
- *                      对随机偏置做上诉相同非线性运算(偏置不参与运算)，得到加密后偏置，合起来得到最终密文。解密则先解偏置，再解密文
+ *                      对随机偏置做上述相同非线性运算(偏置不参与运算)，得到加密后偏置，合起来得到最终密文。解密则先解偏置，再解密文
  */
 namespace lin\algorithms;
 
@@ -26,7 +26,7 @@ class LSE
     public function __construct(string $secretKey, int $times = 5)
     {
         $this->key   = $this->convert(md5($secretKey, true)); //初始密钥
-        $this->times = $times > 1 ? $times : 1;
+        $this->times = $times > 2 ? $times : 2;
     }
 
     /**

@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-10-19 10:28:19
- * @Modified time:      2018-11-02 14:17:05
+ * @Modified time:      2018-12-14 15:49:17
  * @Depends on Linker:  Config Log Request ServerLocal ServerKV ServerQueue ServerSQL
  * @Description:        对lin组件的一些封装和提供分层访问和流式访问的功能
  */
@@ -23,8 +23,7 @@ class Layer
     {
         $this->setting();
     }
-    final protected function use(string $utils)
-    {
+    function use (string $utils) {
         if ($utils == '*') {
             $utils = ['http', 'log', 'local', 'queue', 'kv', 'sql'];
         } else {
@@ -84,7 +83,7 @@ class Layer
         $Class     = self::_getClassName_52570($block, $namespace);
         return $Class;
     }
-    final protected static function flow(array $layers, $data = null)
+    final protected static function flow(array $layers, $data = null): object
     {
         $config    = Linker::Config()::get('lin')['layer'];
         $namespace = $config['namespace']['layer'];

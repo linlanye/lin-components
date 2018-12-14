@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-01-03 17:41:10
- * @Modified time:      2018-11-02 14:14:47
+ * @Modified time:      2018-12-14 16:17:14
  * @Depends on Linker:  ServerSQL Exception
  * @Description:        用于查询关系数据库的对象化操作。多记录查询时，可使用yieldSelect方法逐次获取结果而节约内存
  */
@@ -61,8 +61,9 @@ class Query
                     $this->Driver->execute($this->Creator->getSQL(), $this->Creator->getParameters());
                     break;
             }
-            $this->hasWhere = false;
-
+            $this->hasWhere    = false;
+            $isGenerator       = $this->isGenerator;
+            $this->isGenerator = false;
             switch ($method) {
                 case 'replace':
                 case 'insert':
@@ -72,8 +73,7 @@ class Query
                 case 'one':
                     return $this->Driver->fetchAssoc();
                 case 'select':
-                    if ($this->isGenerator) {
-                        $this->isGenerator = false; //关闭生成器开关并返回生成器
+                    if ($isGenerator) {
                         return $this->generator();
                     }
                     return $this->Driver->fetchAllAssoc();
@@ -88,7 +88,8 @@ class Query
         return $this;
     }
     //返回可yield的select查询结果
-    function yield (): object{
+    public function yield (): object
+    {
         $this->isGenerator = true;
         return $this->select();
     }

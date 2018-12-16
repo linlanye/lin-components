@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-07-10 10:47:38
- * @Modified time:      2018-10-23 13:29:18
+ * @Modified time:      2018-12-16 21:44:59
  * @Depends on Linker:  Config
  * @Description:        测试sql构建器的大部分代表性用法
  */
@@ -90,7 +90,7 @@ class SQLCreatorTest extends TestCase
         $f2 = md5(mt_rand());
 
         //union
-        $this->Creator->table($t1)->select()->union('all')->table($t2)->one();
+        $this->Creator->table($t1)->union('all')->table($t2)->one();
         $this->assertSame("select * from $t1 union all select * from $t2 limit 1", $this->getSQL());
 
         //intersect
@@ -210,6 +210,10 @@ class SQLCreatorTest extends TestCase
         $this->Creator->table($table)->join("$table2: inner", "$table.id=$table2.id")->select();
         $this->assertSame("select * from $table inner join $table2 on $table.id=$table2.id", $this->getSQL());
 
+        //多join
+        $table3 = md5(mt_rand());
+        $this->Creator->table($table)->join(["$table2" => "$table.id=$table2.id", "$table3" => "$table2.id=$table3.id"])->select();
+        $this->assertSame("select * from $table join $table2 on $table.id=$table2.id join $table3 on $table2.id=$table3.id", $this->getSQL());
     }
 
     //测试条件语句

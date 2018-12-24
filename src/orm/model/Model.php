@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2016-11-01 09:25:41
- * @Modified time:      2018-10-24 14:03:52
+ * @Modified time:      2018-12-24 13:33:15
  * @Depends on Linker:  none
  * @Description:        数据模型类，提供面向对象化数据库的操作方式，用户需以继承方式实现
  */
@@ -40,7 +40,7 @@ class Model extends ArrayObject
                 if (!($value instanceof $Model)) {
                     $data[$key] = new $Model($value, $flag); //非当前实例则进行实例化，已实例化则直接存储
                 }
-                $data[$key]->setParent($this);
+                $data[$key]->_setParent_1370xh($this);
             }
             $this->_is_multi_83018 = true;
         }
@@ -95,10 +95,6 @@ class Model extends ArrayObject
     {
         return $this->_is_multi_83018;
     }
-    final protected function setParent($ParentModel)
-    {
-        $this->_Parent_Model_04561 = $ParentModel;
-    }
     final protected function setTable(string $table): object
     {
         Params::setTable($table, static::class);
@@ -124,7 +120,10 @@ class Model extends ArrayObject
         Params::setRelation($relation, $params, static::class);
         return $this;
     }
-
+    public function _setParent_1370xh($ParentModel)
+    {
+        $this->_Parent_Model_04561 = $ParentModel;
+    }
     //运行设置
     protected function setting()
     {}

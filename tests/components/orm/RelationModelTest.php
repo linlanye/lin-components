@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-07-22 14:53:51
- * @Modified time:      2018-10-24 14:38:42
+ * @Modified time:      2018-12-24 14:34:27
  * @Depends on Linker:  None
  * @Description:
  */
@@ -54,19 +54,6 @@ class RelationModelTest extends TestCase
         } catch (Exception $e) {
             $this->assertTrue(true);
         }
-    }
-
-    /**
-     * 测试模型句柄正确
-     * @group database
-     */
-    public function testGetModel()
-    {
-        $Master             = new Master(['mk1' => mt_rand()]);
-        $Slave              = new Slave();
-        $Master->single_key = $Slave;
-        $Master->withRelation('single_key')->insert();
-        $this->assertSame($Master->getModel(), $Master);
     }
 
     /**

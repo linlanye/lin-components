@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-07-31 14:05:40
- * @Modified time:      2018-11-07 08:54:02
+ * @Modified time:      2018-12-24 14:56:20
  * @Depends on Linker:  None
  * @Description:        模型写操作，包含关联模型
  */
@@ -21,16 +21,8 @@ class WMap extends Map
         'update' => 1, 'insert' => 1, 'delete' => 1,
     ];
 
-    final public function getModel(): object
-    {
-        if (is_array($this->Model)) {
-            return current($this->Model);
-        }
-        return $this->Model;
-    }
-
     //事务写入是否为严格模式，true则在一次模型写入中任意失败一条都为失败，false则任意一条写入成功都为成功
-    final public function setStrictTrans(): object
+    public function setStrictTrans(): object
     {
         $this->isStrict = true;
         return $this;

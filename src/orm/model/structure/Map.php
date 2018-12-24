@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-08-01 10:36:16
- * @Modified time:      2018-11-01 11:28:00
+ * @Modified time:      2018-12-24 15:39:44
  * @Depends on Linker:  Config Exception ServerSQL
  * @Description:        数据模型映射基类
  */
@@ -79,7 +79,7 @@ class Map
         return $this;
     }
 
-    //本次操作不使用某个宏，使用*表示不使用所有宏
+    //本次操作不使用某个宏
     public function withoutMacro(string $macros): object
     {
         $this->withParams['m'] = array_merge($this->withParams['m'], array_map('trim', explode(',', $macros)));

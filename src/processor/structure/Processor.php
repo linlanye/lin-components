@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-10-24 15:06:59
- * @Modified time:      2018-09-19 10:02:02
+ * @Modified time:      2018-12-26 21:55:15
  * @Depends on Linker:  Config Exception
  * @Description:        数据处理器基类
  */
@@ -60,17 +60,19 @@ class Processor
         return $this;
     }
 
-    //重置,便于复用
-    final protected function reset()
-    {
-        $this->_rules_78799 = [];
-    }
-    final protected function notEmpty($value)
+    //不为0,'0'的空值
+    final public function notEmpty($value): bool
     {
         if (is_string($value)) {
             $value = trim($value);
         }
         return is_numeric($value) || !empty($value); //不为0,'0'的空值
+    }
+
+    //重置,便于复用
+    final protected function _reset_37910()
+    {
+        $this->_rules_78799 = [];
     }
     final protected function exception($info, $subInfo = '')
     {
@@ -79,7 +81,7 @@ class Processor
         } else {
             $type = 'Processor Mapper';
         }
-        $this->reset();
+        $this->_reset_37910();
         Linker::Exception()::throw ($info, 1, $type, $subInfo);
     }
 

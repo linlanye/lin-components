@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-10-24 08:33:55
- * @Modified time:      2018-09-19 20:54:14
+ * @Modified time:      2018-12-26 22:27:42
  * @Depends on Linker:  None
  * @Description:        数据映射器，使用“.”映射多层数组，如'user.id'=>'id',将$data['user']['id']映为$data['id']
  */
@@ -16,7 +16,7 @@ class Mapper extends Processor
 {
     protected $_type_80182 = 'f';
 
-    final public function map(array $data, bool $onlyProcessed = false): array
+    final public function map(array $data, bool $onlyMapped = false): array
     {
         if (!$this->_rules_78799) {
             return $data; //未使用规则直接返回元数据
@@ -86,48 +86,15 @@ class Mapper extends Processor
                 $t = microtime(true);
             }
         }
-        $this->reset();
+        $this->_reset_37910();
 
-        if (!$onlyProcessed) {
-            $this->filter($data); //滤掉空值键
+        if (!$onlyMapped) {
+            $this->_filter_01289($data); //滤掉空值键
             return array_merge_recursive($data, $output);
         }
 
         return $output;
     }
-
-    //对目标赋值
-    final protected function setValue(&$output, $current, $targets)
-    {
-        foreach ($targets as $target) {
-            $reference = &$output;
-            foreach ($target as $field) {
-                if (!isset($reference[$field]) && !array_key_exists($field, $reference)) {
-                    $reference[$field] = [];
-                }
-                $reference = &$reference[$field];
-            }
-            $reference = $current;
-        }
-    }
-    //去除掉空值键，用于宽松模式下和源数据合并前用
-    final protected function filter(&$data)
-    {
-        if (!is_array($data)) {
-            return;
-        }
-        foreach ($data as $k => &$v) {
-            if (is_array($v)) {
-                if (!empty($v)) {
-                    $this->filter($v);
-                }
-                if (empty($v)) {
-                    unset($data[$k]);
-                }
-            }
-        }
-    }
-
     final protected function setRule(string $name, array $rawRules): bool
     {
         $rules = [];
@@ -152,4 +119,37 @@ class Mapper extends Processor
         self::$_params_98001[$this->_type_80182][static::class][$name] = $rules;
         return true;
     }
+
+    //对目标赋值
+    final protected function setValue(&$output, $current, $targets)
+    {
+        foreach ($targets as $target) {
+            $reference = &$output;
+            foreach ($target as $field) {
+                if (!isset($reference[$field]) && !array_key_exists($field, $reference)) {
+                    $reference[$field] = [];
+                }
+                $reference = &$reference[$field];
+            }
+            $reference = $current;
+        }
+    }
+    //去除掉空值键，用于宽松模式下和源数据合并前用
+    final protected function _filter_01289(&$data)
+    {
+        if (!is_array($data)) {
+            return;
+        }
+        foreach ($data as $k => &$v) {
+            if (is_array($v)) {
+                if (!empty($v)) {
+                    $this->_filter_01289($v);
+                }
+                if (empty($v)) {
+                    unset($data[$k]);
+                }
+            }
+        }
+    }
+
 }

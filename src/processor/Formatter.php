@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-10-24 08:33:55
- * @Modified time:      2018-09-19 21:06:13
+ * @Modified time:      2018-12-26 21:55:20
  * @Depends on Linker:  None
  * @Description:        格式化器
  */
@@ -75,7 +75,7 @@ class Formatter extends Processor
                 $t = microtime(true);
             }
         }
-        $this->reset(); //使用后需重置
+        $this->_reset_37910(); //使用后需重置
 
         //是否只保存处理后的数据
         if (!$onlyProcessed) {

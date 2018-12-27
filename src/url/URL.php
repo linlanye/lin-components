@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-04-12 10:03:46
- * @Modified time:      2018-09-04 11:13:47
+ * @Modified time:      2018-12-27 21:58:53
  * @Depends on Linker:  Config
  * @Description:        生成完整的url地址
  */
@@ -17,13 +17,6 @@ class URL
     private static $domin; //域名
     private static $script; //当前脚本名
     private static $status = 0;
-
-    //重新加载配置
-    public static function reset(): bool
-    {
-        self::$status = 0;
-        return true;
-    }
 
     /**
      * 获得生成的url
@@ -61,6 +54,14 @@ class URL
         self::init();
         return ['domin' => self::$domin, 'script' => self::$script];
     }
+
+    //重新加载配置
+    public static function reset(): bool
+    {
+        self::$status = 0;
+        return true;
+    }
+
     private static function init()
     {
         if (self::$status) {

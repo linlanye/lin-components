@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-01-13 23:30:47
- * @Modified time:      2018-12-11 10:20:01
+ * @Modified time:      2018-12-27 22:29:14
  * @Depends on Linker:  Config Request
  * @Description:        路由运行和获得路由规则构建器
  */
@@ -113,10 +113,5 @@ class Route
         self::$status = 0;
         Creator::reset();
         return true;
-    }
-
-    public static function clearCache(string $file): bool
-    {
-
     }
 }

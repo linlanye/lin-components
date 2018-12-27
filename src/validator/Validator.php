@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-08-03 10:29:05
- * @Modified time:      2018-09-28 21:19:22
+ * @Modified time:      2018-12-27 16:28:24
  * @Depends on Linker:  Config Exception
  * @Description:        验证器，规则格式如field=>['callFunc','errorInfo', field=>callFunc, 'field1,field2'=>callFunc，
  *                      对与需要传参的情况使用冒号表明，多个参数用“,”隔开，对单字段多规则验证使用闭包完成，
@@ -49,7 +49,7 @@ class Validator
         }
         $t        = microtime(true);
         $ruleName = $this->_rules_13077;
-        $this->reset(); //每次使用前都需重置
+        $this->_reset_72890(); //每次使用前都需重置
 
         $rules = [];
         foreach ($ruleName as $name) {
@@ -79,7 +79,7 @@ class Validator
                     }
                     $args[] = $data[$_field];
                 }
-                $r = $this->isValid($func, $args, $exists, $type);
+                $r = $this->_isValid_27101($func, $args, $exists, $type);
 
                 if ($r) {
                     $once = true;
@@ -111,21 +111,21 @@ class Validator
     {
         return $this->_error_info_80128;
     }
+    final protected function setRule(string $name, array $rules): bool
+    {
+        Params::set(static::class, $name, $rules);
+        return true;
+    }
 
     //重置数据
-    final public function reset(): bool
+    final protected function _reset_72890(): bool
     {
         $this->_error_info_80128 = [];
         $this->_rules_13077      = [];
         return true;
     }
 
-    final protected function setRule(string $name, array $rules): bool
-    {
-        Params::set(static::class, $name, $rules);
-        return true;
-    }
-    final protected function isValid($func, $args, $exists, $type)
+    final protected function _isValid_27101($func, $args, $exists, $type)
     {
         switch ($type) {
             case 'must': //是否存在都验证，不存在则直接不通过，存在则验证
@@ -169,7 +169,7 @@ class Validator
 
     final protected function exception($info, $subInfo = '')
     {
-        $this->reset();
+        $this->_reset_72890();
         Linker::Exception()::throw ($info, 1, 'Validator', $subInfo);
     }
 

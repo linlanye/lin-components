@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-07-22 15:03:53
- * @Modified time:      2018-08-20 16:25:41
+ * @Modified time:      2018-12-27 13:58:27
  * @Depends on Linker:  None
  * @Description:        测试格式化函数
  */
@@ -117,8 +117,8 @@ class ExceptionParserTest extends TestCase
         //日期转换
         $date         = '2018-8-20';
         $date_invalid = '2018 8-20';
-        $this->assertTrue(Functions::date2Time($date) > 0);
-        $this->assertNull(Functions::date2Time($date_invalid));
+        $this->assertTrue(Functions::date2Timestamp($date) > 0);
+        $this->assertNull(Functions::date2Timestamp($date_invalid));
     }
 
     //字符专用转换

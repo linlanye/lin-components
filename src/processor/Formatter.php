@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-10-24 08:33:55
- * @Modified time:      2018-12-26 21:55:20
+ * @Modified time:      2018-12-27 11:02:37
  * @Depends on Linker:  None
  * @Description:        格式化器
  */
@@ -16,7 +16,7 @@ class Formatter extends Processor
 {
     protected $_type_80182 = 'f';
 
-    final public function format(array $data, bool $onlyProcessed = false): array
+    final public function format(array $data, bool $onlyFormatted = false): array
     {
         if (!$this->_rules_78799) {
             return $data; //未使用规则直接返回元数据
@@ -78,7 +78,7 @@ class Formatter extends Processor
         $this->_reset_37910(); //使用后需重置
 
         //是否只保存处理后的数据
-        if (!$onlyProcessed) {
+        if (!$onlyFormatted) {
             $output = array_merge($data, $output);
         }
 

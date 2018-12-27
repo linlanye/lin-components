@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-01-17 08:59:22
- * @Modified time:      2018-09-10 16:35:15
+ * @Modified time:      2018-12-27 13:58:43
  * @Depends on Linker:  None
  * @Description:        格式化数据，对传入数据在某个函数中不符合该函数的入参或处理失败，
  *                      则该函数会返回指定默认值。
@@ -56,7 +56,7 @@ class Functions
 
     /****通用类型转指定类型****/
     //转为标准日期
-    public static function toDate($v, $default = null):  ? string
+    public static function toDate($v,  ? string $default = null) :  ? string
     {
         if (is_string($v)) {
             $v = strtotime($v); //存在可转为日期的字符
@@ -70,7 +70,7 @@ class Functions
         return date('Y-m-d H:i:s', $v);
     }
     //转为1或默认值
-    public static function toActive($v, $default = 0) :  ? int
+    public static function toActive($v,  ? int $default = 0) :  ? int
     {
         if (is_numeric($v)) {
             return round($v) > 0 ? 1 : $default;
@@ -84,7 +84,7 @@ class Functions
         return $default;
     }
     //转为正整数
-    public static function toPNum($v, $default = null) :  ? int
+    public static function toPNum($v,  ? int $default = null) :  ? int
     {
         if (!is_numeric($v)) {
             return $default;
@@ -93,7 +93,7 @@ class Functions
         return $v > 0 ? $v : 1;
     }
     //转为自然数
-    public static function toNatNum($v, $default = null) :  ? int
+    public static function toNatNum($v,  ? int $default = null) :  ? int
     {
         if (!is_numeric($v)) {
             return $default;
@@ -102,7 +102,7 @@ class Functions
         return $v >= 0 ? $v : 0;
     }
     //转为负整数
-    public static function toNNum($v, $default = null) :  ? int
+    public static function toNNum($v,  ? int $default = null) :  ? int
     {
         if (!is_numeric($v)) {
             return $default;
@@ -111,7 +111,7 @@ class Functions
         return $v < 0 ? $v : -1;
     }
     //转为两位小数字符串
-    public static function toPrice($v, $default = null) :  ? string
+    public static function toPrice($v,  ? string $default = null) :  ? string
     {
         if (!is_numeric($v)) {
             return $default;
@@ -119,7 +119,7 @@ class Functions
         return sprintf('%.2f', round($v, 2));
     }
     //转换为千分位分割的数字
-    public static function toTString($v, $default = null) :  ? string
+    public static function toTString($v,  ? string $default = null) :  ? string
     {
         if (!is_numeric($v)) {
             return $default;
@@ -127,7 +127,7 @@ class Functions
         return number_format($v);
     }
     //转为过去时间
-    public static function toPast($t, $default = null) :  ? string
+    public static function toPast($t,  ? string $default = null) :  ? string
     {
         if (!is_numeric($t)) {
             return $default;
@@ -157,7 +157,7 @@ class Functions
         return round(($v / 3600 / 24 / 30 / 12)) . '年前';
     }
     //时间戳转为未来时间
-    public static function toFuture($t, $default = null) :  ? string
+    public static function toFuture($t,  ? string $default = null) :  ? string
     {
         if (!is_numeric($t)) {
             return $default;
@@ -187,7 +187,7 @@ class Functions
         return ($v / 3600 / 24 / 30 / 12) . '年后';
     }
     //转为倒计时
-    public static function toCountdown($v, $default = null) :  ? string
+    public static function toCountdown($v,  ? string $default = null) :  ? string
     {
         if (!is_numeric($v)) {
             return $default;
@@ -215,17 +215,17 @@ class Functions
 
     /**************************/
 
-    /***指定类型转另一类指定类型***/
+    /***#### 任意类型转指定类型。***/
     //整数转IP
-    public static function num2IP($v, $default = null) :  ? string
+    public static function num2IP($v,  ? string $default = null) :  ? string
     {
         if (!is_numeric($v) || $v < -0x7fffffff || $v > 0x7fffffff) {
             return $default;
         }
         return long2ip($v);
     }
-    //IP转整数,默认值为32位PHP_INT_MAX+1
-    public static function ip2Num(string $v, $default = null) :  ? int
+    //IP转整数
+    public static function ip2Num(string $v,  ? int $default = null) :  ? int
     {
         if (filter_var($v, FILTER_VALIDATE_IP) === false) {
             return $default;
@@ -237,7 +237,7 @@ class Functions
         return $r;
     }
     //日期转时间戳
-    public static function date2time($v, $default = null) :  ? int
+    public static function date2Timestamp($v,  ? int $default = null) :  ? int
     {
         if (!is_string($v) && !is_numeric($v)) {
             return $default;
@@ -253,19 +253,19 @@ class Functions
     /*********字符专用转换*********/
 
     //明文字符串转安全密码
-    public static function forPwd(string $v, $cost = 10) : string
+    public static function forPwd(string $v, int $cost = 10) : string
     {
         return password_hash($v, PASSWORD_DEFAULT, ['cost' => $cost]); //校验时请使用password_verify($pwd,$hash)函数
     }
 
     //对html字符进行转义
-    public static function forHTML(string $v): string
+    public static function forHTML(string $v) : string
     {
         return htmlspecialchars($v);
     }
 
     //剔除字符串中的指定符号
-    public static function stripSymbol(string $v, string $symbol): string
+    public static function stripSymbol(string $v, string $symbol) : string
     {
         if ($symbol === '/') {
             $symbol = preg_quote($symbol, '/');
@@ -273,12 +273,12 @@ class Functions
         return preg_replace('/' . $symbol . '/', '', $v);
     }
     //剔除字符串中的所有逗号
-    public static function stripComma(string $v): string
+    public static function stripComma(string $v) : string
     {
         return self::stripSymbol($v, ',');
     }
     //剔除字符串中的所有空格
-    public static function stripSpace(string $v): string
+    public static function stripSpace(string $v) : string
     {
         return self::stripSymbol($v, '\s');
     }

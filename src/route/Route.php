@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-01-13 23:30:47
- * @Modified time:      2018-12-27 22:29:14
+ * @Modified time:      2018-12-28 09:46:41
  * @Depends on Linker:  Config Request
  * @Description:        路由运行和获得路由规则构建器
  */
@@ -95,18 +95,19 @@ class Route
     }
 
     //关闭路由器并执行回调
-    public static function off(Closure $Closure = null)
+    public static function off(callable $callable = null)
     {
         self::$status = 1;
-        if ($Closure) {
-            return $Closure();
+        if ($callable) {
+            return call_user_func($callable);
         }
         return true;
     }
     //获得路由规则创建器
     public static function getCreator(): object
     {
-        return new Creator;
+        $namespace = Linker::Config()::get('lin')['route']['namespace'];
+        return new Creator($namespace);
     }
     public static function reset(): bool
     {

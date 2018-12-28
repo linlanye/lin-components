@@ -3,8 +3,8 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-01-13 23:30:47
- * @Modified time:      2018-11-02 13:49:28
- * @Depends on Linker:  Config Exception
+ * @Modified time:      2018-12-28 10:42:50
+ * @Depends on Linker:  Exception
  * @Description:        路由规则创建器，规则有三种格式，
  *                      ['url'=>'class.method']、['url'=>['class.method','class2.method2']]、['url'=>Closure]
  */
@@ -17,20 +17,23 @@ class Creator
 {
     private static $rules   = []; //生成的规则
     private static $counter = ['pre' => 0, 'post' => 0]; //使用计数器表示前置和后置id
-    private $namespace;
+    private $namespaces;
     private $pre  = []; //前置执行
     private $post = []; //后置执行
 
-    public function __construct()
+    public function __construct($namespaces)
     {
-        $namespaces = Linker::Config()::get('lin')['route']['namespace'];
         foreach ($namespaces as &$namespace) {
             $namespace = rtrim($namespace, '\\') . '\\'; //处理命名空间
         }
-        $this->namespace = $namespaces;
+        $this->namespaces = $namespaces;
     }
 
-    //携带前置执行
+    /**
+     * 携带前置执行
+     * @param  string|array $pre 前置执行规则
+     * @return $this
+     */
     public function withPre($pre): object
     {
         $this->with($pre, 'pre');
@@ -60,13 +63,13 @@ class Creator
         $final_rules = ['S' => [], 'D' => [], 'PRE' => [], 'POST' => []];
         if ($this->pre) {
             $pre_id                      = self::$counter['pre']++;
-            $pre_rules                   = $this->parse($this->pre, $this->namespace['pre']);
+            $pre_rules                   = $this->parse($this->pre, $this->namespaces['pre']);
             $this->pre                   = [];
             $final_rules['PRE'][$pre_id] = $pre_rules;
         }
         if ($this->post) {
             $post_id                       = self::$counter['post']++;
-            $post_rules                    = $this->parse($this->post, $this->namespace['post']);
+            $post_rules                    = $this->parse($this->post, $this->namespaces['post']);
             $this->post                    = [];
             $final_rules['POST'][$post_id] = $post_rules;
         }
@@ -84,7 +87,7 @@ class Creator
             $final_rules[$type][$url] = [
                 'pre'    => $pre_id ?? null,
                 'post'   => $post_id ?? null,
-                'main'   => $this->parse($rule, $this->namespace['main']),
+                'main'   => $this->parse($rule, $this->namespaces['main']),
                 'params' => $params, //动态参数名
             ];
         }

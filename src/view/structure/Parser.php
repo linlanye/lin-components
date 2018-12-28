@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-06-20 11:53:48
- * @Modified time:      2018-12-11 09:11:25
+ * @Modified time:      2018-12-28 16:56:25
  * @Depends on Linker:  Config Exception
  * @Description:        解析视图
  */
@@ -79,7 +79,7 @@ class Parser
         }
     }
 
-    //输出视图
+    //解析并输出视图
     public function show($view, $data)
     {
         if (is_callable($this->config['security'])) {
@@ -95,7 +95,7 @@ class Parser
         include $_cache_file_cnpa780DAH0xa;
     }
     //获得解析后文件名
-    public function getFile($view, $data)
+    public function getParsedFile($view, $data)
     {
         if (is_callable($this->config['security'])) {
             $data = $this->handleSafe($this->config['security'], $data); //数据安全处理

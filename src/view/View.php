@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-06-20 11:53:48
- * @Modified time:      2018-09-09 22:40:32
+ * @Modified time:      2018-12-28 16:57:04
  * @Depends on Linker:  None
  * @Description:        视图类
  */
@@ -50,14 +50,9 @@ class View
     //获得解析内容
     public function getContents(string $view): string
     {
-        return file_get_contents($this->getFile($view));
-    }
-    //获得解析后文件名
-    public function getFile(string $view): string
-    {
-        $file       = $this->Parser->getFile(trim($view, '/'), $this->data); //获得解析后值，末尾加入随机字符
+        $file       = $this->Parser->getParsedFile(trim($view, '/'), $this->data); //获得解析后值，末尾加入随机字符
         $this->data = [];
-        return $file;
+        return file_get_contents($file);
     }
     //获取分配变量
     public function getData(): array

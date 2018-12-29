@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-06-20 11:53:48
- * @Modified time:      2018-12-28 16:56:25
+ * @Modified time:      2018-12-29 09:55:46
  * @Depends on Linker:  Config Exception
  * @Description:        解析视图
  */
@@ -149,6 +149,7 @@ class Parser
         //1,处理继承标签,r中为[匹配到的整个继承标签，模版名],只继承一个
         if (preg_match($this->tag['extends'], $content, $r)) {
             $content = str_replace($r[0], '', $content); //去除继承标签
+            $r[1]    = ltrim($r[1], '/'); //继承文件名可能位于目录下，去掉目录前缀
             $parent  = $this->parse($r[1]); //获得标签内容
             $parent  = preg_split($this->tag['location'], $parent); //定位父模板的继承点
             $n       = count($parent);
@@ -167,6 +168,7 @@ class Parser
         if (preg_match_all($this->tag['include'], $content, $r, PREG_SET_ORDER)) {
             foreach ($r as $v) {
                 $content = explode($v[0], $content, 2); //分割原内容为两部分
+                $v[1]    = ltrim($v[1], '/'); //包含文件名可能位于目录下，去掉目录前缀
                 $include = $this->parse($v[1]); //获得标签内容
                 $content = $content[0] . $include . $content[1];
             }

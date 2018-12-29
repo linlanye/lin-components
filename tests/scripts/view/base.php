@@ -2,12 +2,12 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-09-07 08:57:42
- * @Modified time:      2018-09-09 23:08:56
+ * @Modified time:      2018-12-29 09:30:20
  * @Depends on Linker:  None
  * @Description:        测试模板标签输出，变量输出和函数输出，语法标签解析
  -->
 
-{use lin\tests\components\ViewTest as SomeClass;}
+{use lin\tests\components\ViewTest as SomeClass}
 
 <div output="{:$value_var}">
 	{:value_var}<!-- 两种输出变量类型，后一种是单变量输出 -->

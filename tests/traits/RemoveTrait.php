@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-07-10 11:07:13
- * @Modified time:      2018-09-28 15:31:26
+ * @Modified time:      2019-01-02 22:40:46
  * @Depends on Linker:  None
  * @Description:        对文件夹进行删除
  */
@@ -15,8 +15,7 @@ trait RemoveTrait
     {
         $dir = trim($dir, '/') . '/';
         if (!is_dir($dir)) {
-            @unlink($dir);
-            var_dump($dir);
+            unlink($dir);
             return;
         }
         foreach (scandir($dir) as $file) {
@@ -24,10 +23,10 @@ trait RemoveTrait
                 if (is_dir($dir . $file)) {
                     self::rmdir($dir . $file);
                 } else {
-                    @unlink($dir . $file);
+                    unlink($dir . $file);
                 }
             }
         }
-        @rmdir($dir);
+        rmdir($dir);
     }
 }

@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-05-29 10:36:16
- * @Modified time:      2018-09-28 15:28:09
+ * @Modified time:      2019-01-02 21:31:37
  * @Depends on Linker:  None
  * @Description:
  */
@@ -27,6 +27,7 @@ class KVLocalTest extends TestCase
     }
     public static function tearDownAfterClass()
     {
+        (new KVLocal)->close();
         $kv_dir = Linker::Config()::lin('server.kv.driver.local.path');
         KVLocal::setMaxParameters(['file_size' => 1000]);
         KVLocal::setBlockParameters(['size' => 1000, 'factor' => 2]); //后续测试还要用到大数据，size需变大

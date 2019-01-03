@@ -22,7 +22,7 @@ Linker::register([
     'ServerSQL'   => 'lin\\basement\\server\\sql\\SQLPDO',
     'ServerKV'    => 'lin\\basement\\server\\kv\\KVLocal',
     'ServerLocal' => 'lin\\basement\\server\\local\\Local',
-    'ServerQueue' => 'lin\\basement\\server\\queue\\LocalQueue',
+    'ServerQueue' => 'lin\\basement\\server\\queue\\QueueLocal',
     'Log'         => 'lin\\basement\\log\\log',
     'Exception'   => 'lin\\basement\\exception\\GeneralException',
     'Debug'       => 'lin\\basement\\debug\\Debug',
@@ -43,3 +43,7 @@ Linker::Config()::set('servers', include __ROOT__ . '/config/test-servers.php');
 if (!file_exists(__TMP__)) {
     mkdir(__TMP__, 0750, true); //创建临时文件夹
 }
+
+//设置kv模拟器参数
+lin\basement\server\kv\KVLocal::setMaxParameters(['file_size' => 1000, 'hash' => 100, 'scan_time' => 0.1]);
+lin\basement\server\kv\KVLocal::setBlockParameters(['size' => 100, 'factor' => 1.3]);

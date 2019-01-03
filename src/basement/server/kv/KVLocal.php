@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-12-17 11:22:40
- * @Modified time:      2019-01-02 21:27:47
+ * @Modified time:      2019-01-03 09:08:02
  * @Depends on Linker:  Config Exception
  * @Description:        使用本地文件读写模拟KV服务器，本算法特点是快读慢写，本类支持并发场景。
  *                      若需转载或通过其它语言重写本算法实现，请注明原作者为林澜叶，原出处为lin框架
@@ -168,7 +168,6 @@ class KVLocal
             fclose($value[0]);
             unset(self::$cache[$key]);
         }
-        fclose(self::$fIndex);
         self::$fIndex = null;
         return true;
     }

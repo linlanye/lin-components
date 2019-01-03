@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-09-28 10:55:55
- * @Modified time:      2018-09-28 15:46:20
+ * @Modified time:      2019-01-03 11:12:02
  * @Depends on Linker:  None
  * @Description:
  */
@@ -27,7 +27,6 @@ class SecurityTest extends TestCase
     {
         self::createDB('security');
     }
-
     public function testBuild()
     {
         try {
@@ -36,18 +35,25 @@ class SecurityTest extends TestCase
         } catch (Exception $e) {
             $this->assertTrue(true);
         }
+        $this->assertNotEmpty(Security::withID(1)->build(md5(mt_rand()), 1, 1)); //未指定token
+        $token  = md5(mt_rand());
+        $_token = Security::withToken($token)->withID(1)->build(md5(mt_rand()), 1, 1); //指定token
+        $this->assertSame($token, $_token);
+    }
+
+    /**
+     * @requires extension gd
+     */
+    public function testImage()
+    {
         try {
             Security::byImage()->withID(1)->build(md5(mt_rand())); //输出验证码，会写header
             $this->assertTrue(false);
         } catch (Exception $e) {
             $this->assertTrue(true);
         }
-
-        $this->assertNotEmpty(Security::withID(1)->build(md5(mt_rand()), 1, 1)); //未指定token
-        $token  = md5(mt_rand());
-        $_token = Security::withToken($token)->withID(1)->build(md5(mt_rand()), 1, 1); //指定token
-        $this->assertSame($token, $_token);
     }
+
     /**
      * @group sleep
      */

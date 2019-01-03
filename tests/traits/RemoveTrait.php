@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-07-10 11:07:13
- * @Modified time:      2019-01-03 10:15:07
+ * @Modified time:      2019-01-03 10:36:52
  * @Depends on Linker:  None
  * @Description:        对文件夹进行删除
  */
@@ -13,7 +13,7 @@ trait RemoveTrait
 {
     protected static function rmdir($dir)
     {
-        $dir = trim($dir, '/');
+        $dir = rtrim($dir, '/');
         if (!is_dir($dir)) {
             unlink($dir);
             return;

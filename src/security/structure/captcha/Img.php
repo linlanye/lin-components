@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-05-09 22:57:13
- * @Modified time:      2018-09-27 17:07:28
+ * @Modified time:      2019-01-03 11:08:10
  * @Depends on Linker:  Config
  * @Description:        输出图片验证码
  */
@@ -88,8 +88,28 @@ class Img
         //5.画背景图(可选)
         $nbg = count($this->config['background']);
         if ($nbg > 0) {
-            $select    = mt_rand(0, $nbg - 1);
-            $this->img = imagecreatefromjpeg($this->config['background'][$select]);
+            $select = mt_rand(0, $nbg - 1);
+            $select = $this->config['background'][$select];
+            $type   = explode('.', $select);
+            $type   = end($type);
+            switch (strtolower($type)) {
+                case 'png':
+                    $this->img = imagecreatefrompng($select);
+                    break;
+                case 'jpg':
+                case 'jpeg':
+                    $this->img = imagecreatefromjpeg($select);
+                    break;
+                case 'gif':
+                    $this->img = imagecreatefromgif($select);
+                    break;
+                case 'bmp':
+                    $this->img = imagecreatefrombmp($select);
+                    break;
+                default:
+                    Linker::Exception()::throw ('不支持的背景图片', 1, 'Security Image', $select);
+                    break;
+            }
         } else {
             $this->img = imagecreate($this->width, $this->height); //创建一个图层
         }

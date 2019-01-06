@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-01-03 17:45:36
- * @Modified time:      2018-08-29 16:58:27
+ * @Modified time:      2019-01-06 14:38:27
  * @Depends on Linker:  Config
  * @Description:        kv服务器，通过memcached类实现
  */
@@ -21,7 +21,12 @@ class KVMemcached extends BaseMemcached
         $key     = $this->prefix . $key;
         $time    = microtime(true);
         $value   = $this->Driver->get($key);
-        $success = $this->Driver->getResultCode() !== Memcached::RES_NOTFOUND;
+        $success = true;
+        if ($value === false) {
+            if ($this->Driver->getResultCode() !== Memcached::RES_SUCCESS) {
+                $success = false;
+            }
+        }
         if ($this->Debug) {
             $this->Debug->handleGet($key, $value, microtime(true) - $time, $this->index, $success);
         }

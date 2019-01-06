@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-09-05 09:07:41
- * @Modified time:      2018-12-28 16:59:26
+ * @Modified time:      2019-01-05 23:13:36
  * @Depends on Linker:  None
  * @Description:        视图渲染引擎测试，未测试缓存过期
  */
@@ -12,6 +12,7 @@ namespace lin\tests\components;
 
 use DOMDocument;
 use Linker;
+use lin\view\structure\Parser;
 use lin\view\View;
 use PHPUnit\Framework\TestCase;
 
@@ -111,6 +112,36 @@ class ViewTest extends TestCase
         $contents = $this->View->assign('array', $array)->assign('var', $xss)->getContents('security');
         $this->assertNotFalse(strstr($contents, htmlspecialchars($xss))); //断言已含安全转义
         $this->assertFalse(strstr($contents, $xss)); //断言不含xss注入
+    }
+    public function testClearCache()
+    {
+        $Parser = new Parser;
+
+        $this->View->getContents('base');
+        $this->View->getContents('extends');
+        $this->View->getContents('parent');
+        $this->View->getContents('security');
+        $this->View->getContents('static');
+        $base     = $Parser->getCacheName('base');
+        $extends  = $Parser->getCacheName('extends');
+        $parent   = $Parser->getCacheName('parent');
+        $security = $Parser->getCacheName('security');
+        $static   = $Parser->getCacheName('static');
+
+        $this->assertFileExists($base);
+        $this->assertFileExists($extends);
+        $this->assertFileExists($parent);
+        $this->assertFileExists($security);
+        $this->assertFileExists($static);
+
+        View::clearCache('base, extends');
+        $this->assertFileNotExists($base);
+        $this->assertFileNotExists($extends);
+
+        View::clearCache('*');
+        $this->assertFileNotExists($parent);
+        $this->assertFileNotExists($security);
+        $this->assertFileNotExists($static);
     }
 
     //用于测试模板中函数输出解析

@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-01-13 23:30:47
- * @Modified time:      2018-12-28 09:46:41
+ * @Modified time:      2019-01-06 13:02:14
  * @Depends on Linker:  Config Request
  * @Description:        路由运行和获得路由规则构建器
  */
@@ -109,6 +109,32 @@ class Route
         $namespace = Linker::Config()::get('lin')['route']['namespace'];
         return new Creator($namespace);
     }
+
+    //清除所有缓存
+    public static function clearCache(string $files = '*'): bool
+    {
+        $config = Linker::Config()::get('lin')['route'];
+        $path   = rtrim($config['path'], '/') . '/';
+        $Parser = new Parser($config);
+        $caches = [];
+
+        //获得每一个子缓存
+        foreach ($Parser->getFiles($files) as $file) {
+            $file     = explode($path, $file)[1];
+            $file     = explode('.php', $file)[0];
+            $caches[] = $Parser->getCacheName($file); //单个缓存文件
+        }
+        $caches[] = $Parser->getCacheName($files); //主缓存文件
+
+        foreach ($caches as $cache) {
+            $cache = glob("$cache*.php"); //获得多个方法的缓存文件
+            foreach ($cache as $file) {
+                unlink($file);
+            }
+        }
+        return true;
+    }
+
     public static function reset(): bool
     {
         self::$status = 0;

@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-08-21 15:22:13
- * @Modified time:      2018-12-06 13:52:12
+ * @Modified time:      2019-01-06 13:50:09
  * @Depends on Linker:  Config
  * @Description:        测试路由器
  */
@@ -13,10 +13,12 @@ use Exception;
 use Linker;
 use lin\basement\request\Request;
 use lin\route\Route;
+use lin\route\structure\Parser;
 use PHPUnit\Framework\TestCase;
 
 class RouteTest extends TestCase
 {
+    use \lin\tests\traits\RemoveTrait;
     public function setUp()
     {
         //模拟数据
@@ -30,6 +32,11 @@ class RouteTest extends TestCase
         Route::reset();
         Request::reset(); //重置请求避免缓存
     }
+    public static function tearDownAfterClass()
+    {
+        self::rmdir(Linker::Config()::lin('route.cache.path'));
+    }
+
     //测试运行文件读取
     public function testLoading()
     {
@@ -157,5 +164,43 @@ class RouteTest extends TestCase
         $_SERVER['REQUEST_URI'] = "/string.htm"; //多个后缀名都可以处理
         Route::run('route1');
         $this->expectOutputString('stringstring');
+    }
+
+    public function testClearCache()
+    {
+        $config = Linker::Config()::lin('route');
+        $path   = rtrim($config['path'], '/') . '/';
+
+        //禁止输出内容
+        ob_start();
+        Route::run('route1');
+        Route::reset();
+        Route::run('route2');
+        Route::reset();
+        ob_end_clean();
+
+        $Parser = new Parser($config);
+        $file1  = $Parser->getCacheName('route1');
+        $cache1 = glob("$file1*.php");
+        $file2  = $Parser->getCacheName('route2');
+        $cache2 = glob("$file2*.php");
+
+        //存在四个类型缓存文件
+        $this->assertNotEmpty($cache1);
+        $this->assertNotEmpty($cache2);
+
+        //只清除指定缓存
+        Route::clearCache('route1');
+        $cache1 = glob("$file1*.php");
+        $cache2 = glob("$file2*.php");
+        $this->assertEmpty($cache1);
+        $this->assertNotEmpty($cache2);
+
+        //清除所有缓存
+        Route::clearCache();
+        $cache1 = glob("$file1*.php");
+        $cache2 = glob("$file2*.php");
+        $this->assertEmpty($cache1);
+        $this->assertEmpty($cache2);
     }
 }

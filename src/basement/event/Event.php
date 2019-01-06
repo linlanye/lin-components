@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2016-12-19 22:10:50
- * @Modified time:      2018-12-12 22:49:26
+ * @Modified time:      2019-01-06 13:54:59
  * @Depends on Linker:  Config Exception
  * @Description:        事件监听处理
  */
@@ -74,13 +74,6 @@ class Event
         }
         return true;
     }
-    //测试用
-    public static function _reset(): bool
-    {
-        self::$data   = [];
-        self::$status = 0;
-        return true;
-    }
 
     //绑定一次性事件
     public static function one(string $event, callable $callable): bool
@@ -96,32 +89,38 @@ class Event
             return false; //初始化启动
         }
         self::$status = 1;
-
         $t            = microtime(true);
         self::$config = Linker::Config()::get('lin')['event'];
         $path         = rtrim(self::$config['path'], '/') . '/';
-        $files        = explode(',', $files);
-        foreach ($files as &$file) {
-            $file = trim($file);
-            $end  = substr($file, -1);
-            if ($end == '/') {
-                $file .= '*'; //末尾为目录符号，加入通配符
-            } else if ($end != '*') {
-                $file .= '.php'; //末尾非通配符，加入后缀
-            }
-            $file = $path . ltrim($file, '/'); //生成完整的文件名
-        }
+        $lists        = explode(',', $files);
+        $final_files  = [];
         //获得目标规则文件
-        $tmp_files = $files; //debug用
-        $files     = self::scanDir($files);
-        if (!$files) {
-            Linker::Exception()::throw ('文件不存在', 1, 'Event', implode(', ', $tmp_files));
+        foreach ($lists as $file) {
+            $file = trim(ltrim($file, '/'));
+            $end  = substr($file, -1);
+            if (preg_match('/^[a-zA-Z0-9_\-]$/', $end)) {
+                $file .= '.php'; //匹配php文件
+            }
+            $file = $path . $file;
+            $file = glob($file);
+            while ($file) {
+                $current = array_pop($file);
+                if (is_dir($current)) {
+                    $file = array_merge($file, glob("$current/*")); //扫描目录
+                } else {
+                    $final_files[] = $current;
+                }
+            }
+        }
+
+        if (!$final_files) {
+            Linker::Exception()::throw ('缺少可用文件', 1, 'Event', $files);
         }
 
         //加载规则文件
         $time  = [];
         $debug = self::$config['debug'];
-        foreach ($files as $file) {
+        foreach ($final_files as $file) {
             include $file;
             if ($debug) {
                 $t1     = microtime(true);
@@ -131,25 +130,16 @@ class Event
         }
 
         if ($debug) {
-            Debug::run($files, count(self::$data), $time);
+            Debug::run($final_files, count(self::$data), $time);
         }
 
         return true;
     }
 
-    private static function scanDir($files)
+    public static function reset(): bool
     {
-        $final_files = [];
-        do {
-            $current = glob(array_pop($files));
-            foreach ($current as $file) {
-                if (is_dir($file)) {
-                    array_push($files, rtrim($file, '/') . '/*'); //属于目录则压栈递归
-                } else {
-                    $final_files[] = $file;
-                }
-            }
-        } while ($files);
-        return array_unique($final_files); //去重复
+        self::$data   = [];
+        self::$status = 0;
+        return true;
     }
 }

@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-11-01 15:40:25
- * @Modified time:      2018-11-02 13:50:43
+ * @Modified time:      2019-01-06 13:55:16
  * @Depends on Linker:  Exception
  * @Description:        路由解析器
  */
@@ -25,6 +25,8 @@ class Parser
         if ($this->config['debug']) {
             $this->Debug = new Debug;
         }
+        $this->config['cache']['path'] = rtrim($this->config['cache']['path'], '/') . '/';
+        $this->config['path']          = rtrim($this->config['path'], '/') . '/';
     }
 
     /**
@@ -38,7 +40,7 @@ class Parser
     {
         //读取用户规则
         $t          = microtime(true);
-        $cache_file = rtrim($this->config['cache']['path'], '/') . '/' . md5($files); //缓存文件名
+        $cache_file = $this->getCacheName($files); //缓存文件名
         $cache_on   = $this->config['cache']['on']; //缓存是否开启
 
         //非缓存模式或缓存文件不存在，直接读取用户路由文件
@@ -64,6 +66,44 @@ class Parser
         }
 
         return $r;
+    }
+
+    //获得缓存文件名
+    public function getCacheName($files)
+    {
+        $files = array_map('trim', explode(',', $files)); //分割后排序
+        sort($files);
+        $files = implode(', ', $files);
+        return $this->config['cache']['path'] . md5($files);
+    }
+
+    //获得解析后的文件名
+    public function getFiles($files)
+    {
+        //生成匹配文件样式
+        $path        = $this->config['path'];
+        $lists       = explode(',', $files);
+        $final_files = [];
+
+        //获得目标规则文件
+        foreach ($lists as $file) {
+            $file = trim(ltrim($file, '/'));
+            $end  = substr($file, -1);
+            if (preg_match('/^[a-zA-Z0-9_\-]$/', $end)) {
+                $file .= '.php'; //匹配php文件
+            }
+            $file = $path . $file;
+            $file = glob($file);
+            while ($file) {
+                $current = array_pop($file);
+                if (is_dir($current)) {
+                    $file = array_merge($file, glob("$current/*")); //扫描目录
+                } else {
+                    $final_files[] = $current;
+                }
+            }
+        }
+        return $final_files;
     }
 
     /**
@@ -137,53 +177,15 @@ class Parser
      */
     private function loadFiles($files)
     {
-        //生成匹配文件样式
-        $path  = rtrim($this->config['path'], '/') . '/';
-        $files = explode(',', $files);
-        foreach ($files as &$file) {
-            $file = trim($file);
-            $end  = substr($file, -1);
-            if ($end == '/') {
-                $file .= '*'; //末尾为目录符号，加入通配符
-            } else if ($end != '*') {
-                $file .= '.php'; //末尾非通配符，加入后缀
-            }
-            $file = $path . ltrim($file, '/'); //生成完整的文件名
+        $final_files = $this->getFiles($files);
+        if (!$final_files) {
+            $this->exception('缺少可用文件', $files);
         }
-
-        //获得目标规则文件
-        $tmp_files = $files; //debug用
-        $files     = $this->scanDir($files);
-        if (!$files) {
-            $this->exception('文件不存在', implode(', ', $tmp_files));
-        }
-
         //加载规则文件
-        foreach ($files as $file) {
+        foreach ($final_files as $file) {
             include $file;
         }
-        return $files;
-    }
-
-    /**
-     * 递归获得目录下所有文件，满足一般shell匹配规则
-     * @param  array $files 文件或目录样式
-     * @return array        解析出来的文件
-     */
-    private function scanDir($files)
-    {
-        $final_files = [];
-        do {
-            $current = glob(array_pop($files));
-            foreach ($current as $file) {
-                if (is_dir($file)) {
-                    array_push($files, rtrim($file, '/') . '/*'); //属于目录则压栈递归
-                } else {
-                    $final_files[] = $file;
-                }
-            }
-        } while ($files);
-        return array_unique($final_files); //去重复
+        return $final_files;
     }
 
     //用于生成缓存字符串的方法

@@ -3,7 +3,7 @@
 		<testsuite name="Basement" >
 			<directory suffix="Test.php">tests/basement</directory>
 		</testsuite>
-		<testsuite name="Basement" >
+		<testsuite name="basement_server" >
 			<directory suffix="Test.php">tests/basement_server</directory>
 		</testsuite>
 		<testsuite name="Components">

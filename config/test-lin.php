@@ -289,7 +289,7 @@ return [
             echo $url . $method;
         },
         'cache'     => [ //缓存相关
-            'on'   => false,
+            'on'   => true,
             'path' => $lin['cache'] . '/route', //路由缓存路径
         ],
         'debug'     => true,

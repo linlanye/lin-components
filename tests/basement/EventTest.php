@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-05-29 08:38:50
- * @Modified time:      2018-12-12 22:47:10
+ * @Modified time:      2019-01-05 22:50:01
  * @Depends on Linker:  None
  * @Description:        测试事件类，该类属于全局变量，测试方法顺序不能变
  */
@@ -28,23 +28,23 @@ class EventTest extends TestCase
     {
         Event::run(null); //不加载任何事件脚本
         $this->assertFalse(Event::exists('a'));
-        Event::_reset();
+        Event::reset();
 
         Event::run('event1'); //加载指定事件脚本
         $this->assertTrue(Event::exists('a'));
         $this->assertFalse(Event::exists('b'));
-        Event::_reset();
+        Event::reset();
 
         Event::run('event*'); //使用通配符加载指定事件脚本
         $this->assertTrue(Event::exists('a'));
         $this->assertTrue(Event::exists('b'));
-        Event::_reset();
+        Event::reset();
 
-        Event::run('event1, event2,deep/'); //加载多个指定事件脚本
+        Event::run('event1, event2,deep/*'); //加载多个指定事件脚本
         $this->assertTrue(Event::exists('a'));
         $this->assertTrue(Event::exists('b'));
         $this->assertTrue(Event::exists('c'));
-        Event::_reset();
+        Event::reset();
 
     }
 

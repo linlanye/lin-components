@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-06-20 11:53:48
- * @Modified time:      2018-12-29 09:55:46
+ * @Modified time:      2019-01-06 12:37:33
  * @Depends on Linker:  Config Exception
  * @Description:        解析视图
  */
@@ -105,12 +105,18 @@ class Parser
         $file = $this->handle($view);
         return $file;
     }
+    //获得缓存文件名
+    public function getCacheName($view)
+    {
+        return $this->config['cache']['path'] . md5($view) . '.html';
+    }
 
     //显示视图
     private function handle($view)
     {
+        $view       = trim($view, '/');
         $path       = $this->config['cache']['path'];
-        $cache_file = $path . md5($view) . '.html'; //实际打开的文件名
+        $cache_file = $this->getCacheName($view); //实际打开的文件名
         $life       = $this->config['cache']['life'];
 
         //缓存过期

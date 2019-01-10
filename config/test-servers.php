@@ -25,16 +25,16 @@ return [
 
     ],
     'memcached' => [
-        'valid0'   => ['host' => '127.0.0.1', 'port' => 11211, 'weight' => 100],
-        'valid1'   => ['host' => '127.0.0.1', 'port' => 11211, 'weight' => 100],
-        'invalid0' => ['host' => '127.0.0.1', 'port' => 11211, 'weight' => 0], //测试无用
-        'invalid1' => ['host' => '127.0.0.1', 'port' => 11211, 'weight' => -1], //测试无用
+        'valid0'   => ['host' => '127.0.0.1', 'port' => 11230, 'weight' => 100],
+        'valid1'   => ['host' => '127.0.0.1', 'port' => 11230, 'weight' => 100],
+        'invalid0' => ['host' => '127.0.0.1', 'port' => 11230, 'weight' => 0], //测试无用
+        'invalid1' => ['host' => '127.0.0.1', 'port' => 11230, 'weight' => -1], //测试无用
     ],
     'redis'     => [
-        'kv0'    => ['host' => '127.0.0.1', 'port' => '6379', 'pwd' => '', 'weight' => 100, 'timeout' => 1],
-        'kv1'    => ['host' => '127.0.0.1', 'port' => '6379', 'pwd' => '', 'weight' => 100, 'timeout' => 1],
-        'queue0' => ['host' => '127.0.0.1', 'port' => '6379', 'pwd' => '', 'weight' => 100, 'timeout' => 1],
-        'queue1' => ['host' => '127.0.0.1', 'port' => '6379', 'pwd' => '', 'weight' => 100, 'timeout' => 1],
+        'kv0'    => ['host' => '127.0.0.1', 'port' => 6401, 'pwd' => '', 'weight' => 100, 'timeout' => 1],
+        'kv1'    => ['host' => '127.0.0.1', 'port' => 6401, 'pwd' => '', 'weight' => 100, 'timeout' => 1],
+        'queue0' => ['host' => '127.0.0.1', 'port' => 6401, 'pwd' => '', 'weight' => 100, 'timeout' => 1],
+        'queue1' => ['host' => '127.0.0.1', 'port' => 6401, 'pwd' => '', 'weight' => 100, 'timeout' => 1],
     ],
 
 ];

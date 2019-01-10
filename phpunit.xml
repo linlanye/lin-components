@@ -18,6 +18,8 @@
 			<group>sleep</group>
 			<group>server</group>
 			<group>database</group>
+			<group>redis</group>
+			<group>memcached</group>
 		</exclude>
 	</groups> -->
 	<filter>

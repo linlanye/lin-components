@@ -56,7 +56,7 @@ Linker::Config()::set('servers', include 'config/lin-servers.php'); //加载服�
 ```
 
 ## 测试
-安装memcached和redis服务器，并使这二者数据为空，配置`config/test-servers.php`文件，执行`phpunit`后，清空memcached和redis数据即可。
+安装memcached和redis服务器，并使这二者数据为空，配置`config/test-servers.php`文件，执行`phpunit`后，清空memcached和redis数据即可。（若不想测试这二者，可将`phpunit.xml`中的组`redis`和`memcached`排除在外）
 
 ## 详细文档
 

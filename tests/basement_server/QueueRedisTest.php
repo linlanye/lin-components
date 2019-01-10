@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-05-29 10:36:16
- * @Modified time:      2018-08-29 16:59:03
+ * @Modified time:      2019-01-10 23:24:38
  * @Depends on Linker:  Config
  * @Description:        默认本地redis服务可用，该测试才有效
  */
@@ -29,6 +29,10 @@ class QueueRedisTest extends TestCase
     {
         $this->clean();
     }
+
+    /**
+     * @group redis
+     */
     public function testGetName()
     {
         $defaultName = Linker::Config()::lin('server.queue.default.name');
@@ -41,6 +45,7 @@ class QueueRedisTest extends TestCase
 
     /**
      * @group server
+     * @group redis
      */
     public function testPop()
     {
@@ -74,6 +79,7 @@ class QueueRedisTest extends TestCase
 
     /**
      * @group server
+     * @group redis
      */
     public function testIsEmpty()
     {
@@ -100,6 +106,7 @@ class QueueRedisTest extends TestCase
 
     /**
      * @group server
+     * @group redis
      */
     public function testGetSize()
     {
@@ -114,6 +121,9 @@ class QueueRedisTest extends TestCase
         $this->assertEquals($this->Driver->getSize(), 0);
     }
 
+    /**
+     * @group redis
+     */
     public function testUserIndexAndDriver()
     {
         //测试指定索引

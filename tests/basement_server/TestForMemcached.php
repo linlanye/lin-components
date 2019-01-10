@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-05-29 10:36:16
- * @Modified time:      2018-08-29 16:59:04
+ * @Modified time:      2019-01-10 23:22:39
  * @Depends on Linker:  Config
  * @Description:        默认本地memcached服务可用，该测试才有效，键值生命期默认2s，见配置文件
  *                      并替代测试CommonTrait
@@ -28,6 +28,7 @@ class TestForMemcached extends TestCase
      * 基本测试
      * @group sleep
      * @group server
+     * @group memcached
      */
     public function testGeneral()
     {

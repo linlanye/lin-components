@@ -6,15 +6,15 @@
 
 ## 介绍
 
-**Lin-components**是[Lin](https://www.lin-php.com)框架的组件代码，这套组件可以独立于框架运行，它涵盖了常用的web方法和功能，是一套完备的web开发组件集合。其基于[basement](https://github.com/linlanye/basement)(一套web常见功能的开发规范)，并提供了更为多样的功能。
+**Lin-components**是[Lin](https://www.lin-php.com)框架的组件代码，这套组件可以独立于框架运行，它涵盖了常用的web方法和功能，是一套完备的web开发组件集合。其基于[basement](https://github.com/linlanye/basement)(一套web常见功能的开发规范)项目，并提供了更为多样的功能。
 
 ## 特性
 
-* 自带高性能**kv、queue**型模拟服务器，无需安装`redis`和`memcached`等缓存或队列服务器，也能一键实现无缝替换为专用服务器。
+* 自带高性能**kv、queue**型模拟服务器，无需安装`redis`和`memcached`等缓存或队列服务器，并能一键实现无缝替换为专用服务器。
 * 原生透明化支持SQL、Key-Value、Queue等服务器主从、多节点访问。
 * 极简主义设计。所有的方法无论命名、调用都保持简单一致，对外屏蔽了复杂的设计模式，**只呈现最基本的php语法**，避免二次学习成本。例如入参和出参都仅有php基础变量。
-* 零耦合，组件里的每一个小组件都相互独立，之间没有直接性耦合，**皆可以作为一个单独的包使用**。
-* 涵盖场景广。对web应用场景做了深度涵盖，组件所提供的功能可以**满足大型开发**需求。
+* 零耦合。组件里的每一个小组件都相互独立，之间没有直接性耦合，**皆可以作为一个单独的包使用**。
+* 涵盖场景广。对web应用场景做了深度涵盖，组件所提供的功能可以**满足大型开发需求**。
 * 高度整合。对很多相似的功能做了统一化，如对**验证码、oauth、login-in、XSRF、单点登录**等安全场景，都只需一个简单的类`Security`和其仅有的几个方法组合实现。
 * 学习简单。所有**复杂的概念都被屏蔽**，使用者开发时的逻辑思维只需单向进行，如关联关系模型中，n对n的直接关联或远程关联等复杂概念都被屏蔽，使用者只需考虑单方向的主从关系（定义主到从模型即可，无需定义从到主模型）
 
@@ -40,9 +40,9 @@
 "require": {
     "lin/components": "^1.0"
 }
-执行composer update
+执行composer install
 ```
-或
+或命令行执行
 ```
 composer require lin/components 1.0
 ```
@@ -51,12 +51,12 @@ composer require lin/components 1.0
 
 使用前需先通过[basement](https://github.com/linlanye/basement)加载配置文件
 ```
-Linker::Config()::set('lin', include 'config/lin-production.php'); //加载组件配置项
+Linker::Config()::set('lin', include 'config/lin-production.php'); //按需修改并加载组件配置项（生产环境）
 Linker::Config()::set('servers', include 'config/lin-servers.php'); //加载服务器配置项
 ```
 
 ## 测试
-安装memcached和redis服务器，并使这二者数据为空，配置`config/test-servers.php`文件，执行`phpunit`后，清空memcached和redis数据即可。（若不想测试这二者，可将`phpunit.xml`中的组`redis`和`memcached`排除在外）
+安装memcached和redis服务器，并使这二者数据为空，配置`config/test-servers.php`文件，执行`phpunit`后，清空memcached和redis数据即可。（若不想测试这二者，可将`phpunit.xml`中的`redis`和`memcached`组排除在外）
 
 ## 详细文档
 
@@ -68,5 +68,6 @@ Linker::Config()::set('servers', include 'config/lin-servers.php'); //加载服�
 
 ## 版权信息
 * 作者：林澜叶(linlanye)版权所有。
+* Email：linlanye@sina.cn
 * 开源协议：[Apache-2.0](LICENSE)
 

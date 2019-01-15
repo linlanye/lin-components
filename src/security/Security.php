@@ -3,9 +3,10 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-11-01 13:16:54
- * @Modified time:      2018-09-28 15:45:33
+ * @Modified time:      2019-01-15 21:31:17
  * @Depends on Linker:  Config
  * @Description:        提供一系列安全相关功能的整合，如登录、授权、认证、权限访问、单点登录、oauth2、防csrf、重复提交、验证码等等
+ *                      注：本类设计思想由林澜叶独自提出，转载需注明出处。
  */
 namespace lin\security;
 

@@ -12,7 +12,7 @@
 		<env name="Event" value="lin\basement\event\Event"/>
 		<env name="Exception" value="lin\basement\exception\GeneralException"/>
 		<env name="Lang" value="lin\basement\lang\Lang"/>
-		<env name="Log" value="lin\basement\log\log"/>
+		<env name="Log" value="lin\basement\log\Log"/>
 		<env name="Request" value="lin\basement\request\Request"/>
 		<env name="ServerKV" value="lin\basement\server\kv\KVLocal"/>
 		<env name="ServerLocal" value="lin\basement\server\local\Local"/>

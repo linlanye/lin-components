@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-01-17 08:59:22
- * @Modified time:      2018-12-27 13:58:43
+ * @Modified time:      2019-01-20 12:32:49
  * @Depends on Linker:  None
  * @Description:        格式化数据，对传入数据在某个函数中不符合该函数的入参或处理失败，
  *                      则该函数会返回指定默认值。
@@ -217,7 +217,7 @@ class Functions
 
     /***#### 任意类型转指定类型。***/
     //整数转IP
-    public static function num2IP($v,  ? string $default = null) :  ? string
+    public static function num2ip($v,  ? string $default = null) :  ? string
     {
         if (!is_numeric($v) || $v < -0x7fffffff || $v > 0x7fffffff) {
             return $default;
@@ -225,7 +225,7 @@ class Functions
         return long2ip($v);
     }
     //IP转整数
-    public static function ip2Num(string $v,  ? int $default = null) :  ? int
+    public static function ip2num(string $v,  ? int $default = null) :  ? int
     {
         if (filter_var($v, FILTER_VALIDATE_IP) === false) {
             return $default;
@@ -237,7 +237,7 @@ class Functions
         return $r;
     }
     //日期转时间戳
-    public static function date2Timestamp($v,  ? int $default = null) :  ? int
+    public static function date2timestamp($v,  ? int $default = null) :  ? int
     {
         if (!is_string($v) && !is_numeric($v)) {
             return $default;

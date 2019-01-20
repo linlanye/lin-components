@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-05-29 10:36:16
- * @Modified time:      2019-01-10 23:22:39
+ * @Modified time:      2019-01-20 12:36:35
  * @Depends on Linker:  Config
  * @Description:        默认本地memcached服务可用，该测试才有效，键值生命期默认2s，见配置文件
  *                      并替代测试CommonTrait
@@ -16,13 +16,6 @@ use stdclass;
 
 class TestForMemcached extends TestCase
 {
-
-    public static function tearDownAfterClass()
-    {
-        $Test   = new static;
-        $Driver = $Test->getDriver();
-        $Driver->flush();
-    }
 
     /**
      * 基本测试
@@ -56,6 +49,8 @@ class TestForMemcached extends TestCase
         $this->assertTrue($Driver->delete($key));
         $this->assertFalse($Driver->exists($key));
         $this->assertFalse($Driver->delete($key));
+
+        $Driver->flush();
     }
 
     public function testUserIndexAndDriver()

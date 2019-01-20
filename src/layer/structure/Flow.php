@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2018-02-02 13:21:08
- * @Modified time:      2018-12-14 15:45:30
+ * @Modified time:      2019-01-20 12:00:51
  * @Depends on Linker:  None
  * @Description:        提供流程自动化访问各层，并提供一定的中断机制和数据传递机制
  */
@@ -18,7 +18,7 @@ class Flow
     private $step = []; //执行的步骤
 
     //设置当前执行为终点标记
-    public function terminal()
+    public function terminal(): void
     {
         $this->terminal = true;
     }

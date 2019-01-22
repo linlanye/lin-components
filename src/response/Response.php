@@ -3,7 +3,7 @@
  * @Author:             林澜叶(linlanye)
  * @Contact:            <linlanye@sina.cn>
  * @Date:               2017-08-03 11:44:24
- * @Modified time:      2018-11-02 13:44:37
+ * @Modified time:      2019-01-22 15:51:07
  * @Depends on Linker:  Config Exception
  * @Description:        提供响应相关的操作
  */
@@ -18,7 +18,8 @@ class Response
     private $data = []; //存储分配的数据
     public function __construct()
     {
-        $this->config = Linker::Config()::get('lin')['response'];
+        $this->config                    = Linker::Config()::get('lin')['response'];
+        $this->config['jsonxml']['path'] = rtrim($this->config['jsonxml']['path'], '/') . '/';
     }
 
     /**
@@ -135,7 +136,7 @@ class Response
         if ($template) {
             $file = $this->config['jsonxml']['path'] . "$template.php";
             if (!file_exists($file)) {
-                $this->exception('文件不存在', $template);
+                $this->exception('文件不存在', $file);
             }
             $this->data = JSONXML::load($this->data, $file);
         }
